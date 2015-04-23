@@ -1,0 +1,9 @@
+<tr>
+	<td>{{item.product}}</td>
+	<td>{{item.category}}</td>
+	<td>{{item.product}}</td>
+	<td>{{item.price | currency:"€"}}</td>
+	<td><input type="number" ng-model="item.qty" class="input-mini" ng-init="item.qty=1"></td>
+	<td>{{item.qty * item.price | currency:"€"}}</td>
+	<td><button ng-click="removeItem($index)">X</button></td>
+</tr>

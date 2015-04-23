@@ -5,22 +5,26 @@ angular.module('clientApp')
 	$urlRouterProvider.otherwise('/notfound');
 
 	$stateProvider
+
 	.state('home', {
 		url: '/',
 		templateUrl: '/views/home/main.html',
 		controller: 'HomeCtrl',
 		redirectTo: 'home.location'
 	})
+
 	.state('about', {
 		url: '/about',
 		templateUrl: '/views/about/main.html',
 		redirectTo: 'about.theApp'
 	})
+
 	.state('profile', {
 		url: '/profile',
 		templateUrl: '/views/profile/main.html',
 		redirectTo: 'profile.details'
 	})
+
 	.state('signup', {
 		url: '/signup',
 		templateUrl: '/views/users/signup.html',
@@ -30,6 +34,12 @@ angular.module('clientApp')
 	.state('notfound', {
 		url: '/notfound',
 		templateUrl: '/views/notfound.html'
+	})
+
+	.state('results',{
+		url: '/results',
+		templateUrl: '/views/results.html',
+		controller: 'ResultsCtrl'
 	})
 
 	// nested states
