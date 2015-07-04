@@ -1,0 +1,45 @@
+.square{
+	width: 70px;
+	height: 70px;
+	background-color: $accent;
+	padding: 10px;
+	margin: 10px;
+	display: inline-block;
+	overflow: auto;
+	text-align: center;
+	text-decoration: none;
+	color: $dark-grey;
+	@include roundcorners(5px);
+	font-size: 70%;
+	cursor: pointer;
+}
+
+.strip:hover, .square:hover{
+	background-color: $contrast;
+	text-decoration: none;
+	color: $dark-grey;
+}
+
+.square-disabled{
+	opacity: 0.5;
+}
+
+.strip{
+	width: 100%;
+	background-color: $gray;
+	padding: 10px;
+	margin: 10px;
+	text-decoration: none;
+	color: $white;
+	@include roundcorners(5px);
+	cursor: pointer;
+	display: inline-block;
+}
+
+.filterContainer{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+

@@ -4,10 +4,16 @@
 
 <div class="well">
 	<div class="row">
-		<div class="col-md-3">
-			<p>Filtering options go here</p>
-			<p>Buttons for each supermarket so the user can toggle the supermarkets they like on and off</p>
+		<div class="col-md-3 filterContainer">
 			<p>So the API should return the top 3 best matches for each item from each supermarket. Then the front end stores them and filters out appropriately. We can do something like have a button beside each of the items which will show other matches. The best match is what we use, but they have the option to choose other matches which might suit them better</p>
+
+			<a class="strip" ng-click="addAllStoresToFilter()">Add All</a>
+			<a class="strip" ng-click="clearAllStoresFromFilter()">Clear All</a>
+			<!-- <p > -->
+				<!-- <a ng-click="toggleStore(store)" ng-class="(storeFilter.indexOf(store) > -1) ? 'active' : 'disabled'">{{store}}</a> -->
+				<sm-square ng-repeat="store in stores"></sm-square>
+			<!-- </p> -->
+
 		</div>
 		<div class="col-md-9">
 			<div class="table-responsive">
@@ -25,7 +31,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in results" sm-result></tr>
+						<tr ng-repeat="item in results | filterWithOr:{product:storeFilter}" sm-result></tr>
 					</tbody>
 				</table>
 			</div>
