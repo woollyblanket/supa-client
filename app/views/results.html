@@ -7,8 +7,8 @@
 		<div class="col-md-3 filterContainer">
 			<p>So the API should return the top 3 best matches for each item from each supermarket. Then the front end stores them and filters out appropriately. We can do something like have a button beside each of the items which will show other matches. The best match is what we use, but they have the option to choose other matches which might suit them better</p>
 
-			<a class="strip" ng-click="addAllStoresToFilter()">Add All</a>
-			<a class="strip" ng-click="clearAllStoresFromFilter()">Clear All</a>
+			<a class="strip" ng-click="addAllStores()">Add All Stores</a>
+			<a class="strip" ng-click="clearAllStores()">Clear All Stores</a>
 			<!-- <p > -->
 				<!-- <a ng-click="toggleStore(store)" ng-class="(storeFilter.indexOf(store) > -1) ? 'active' : 'disabled'">{{store}}</a> -->
 				<sm-square ng-repeat="store in stores"></sm-square>
@@ -18,6 +18,10 @@
 		<div class="col-md-9">
 			<div class="table-responsive">
 				<h2>Total: {{total() | currency : "€"}}</h2>
+				<div class="btn-group pull-right">
+				    	<label class="btn btn-default" ng-click="setActiveItems(true)" ng-model="radioModel" btn-radio="'Active'" uncheckable><span class="glyphicon glyphicon-list" aria-hidden="true"></span> View Shopping List</label>
+				        <label class="btn btn-default" ng-click="setActiveItems(false)" ng-model="radioModel" btn-radio="'Inactive'" uncheckable><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> View Trashed Items</label>
+				    </div>
 				<table class="table table-striped">
 
 					<thead>
@@ -31,7 +35,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in results | filterWithOr:{product:storeFilter}" sm-result></tr>
+						<tr ng-repeat="item in results | filterWithOr:{product:storeFilter} | filter:{active:showActive}" sm-result></tr>
 					</tbody>
 				</table>
 			</div>

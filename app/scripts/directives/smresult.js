@@ -12,17 +12,5 @@
  		templateUrl: '/views/directives/smresult.html',
  		restrict: 'A',
  		replace: true
- 		// scope: {
- 		// 	image: '@',
- 		// 	description: '@',
- 		// 	price: '@',
- 		// 	store: '@'
- 		// },
- 		// controller: function($scope){
- 		// 	$scope.removeItem = function(index) {
- 		// 		// console.log($scope.results);
- 		// 	    $scope.results.splice(index, 1);
- 		// 	};
- 		// }
  	};
  });

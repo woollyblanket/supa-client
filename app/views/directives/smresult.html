@@ -3,7 +3,26 @@
 	<td>{{item.category}}</td>
 	<td>{{item.product}}</td>
 	<td>{{item.price | currency:"€"}}</td>
-	<td><input type="number" ng-model="item.qty" class="input-mini" ng-init="item.qty=1"></td>
+	<td>
+		<!-- <input type="number" ng-model="item.qty" class="input-mini" min=0> -->
+		<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
+			<button type="button" class="btn btn-info" ng-click="quantityMinus(item.id)">
+				<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+			</button>
+		  	<button type="button" class="btn btn-info" ng-click="quantityPlus(item.id)">
+		  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		  	</button>
+		</div>
+		<span class="badge">{{item.qty}}</span>
+	</td>
 	<td>{{item.qty * item.price | currency:"€"}}</td>
-	<td><button ng-click="removeItem($index)">X</button></td>
+	<td>
+		<button type="button" class="btn btn-success btn-xs" ng-click="toggleActiveItem(item.id)" ng-if="item.active === 0">
+			<span class="glyphicon glyphicon-share-alt icon-flipped" aria-hidden="true"></span> Restore
+		</button>
+
+		<button type="button" class="btn btn-danger btn-xs" ng-click="toggleActiveItem(item.id)" ng-if="item.active === 1">
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+	</td>
 </tr>
