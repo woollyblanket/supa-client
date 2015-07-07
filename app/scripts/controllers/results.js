@@ -21,16 +21,18 @@ angular.module('clientApp')
 		return ShoppingList.results()
 		.then(function(data){
 			$scope.results = data.data;
-			angular.forEach($scope.results, function(item) {
-				item.qty = 1;
-				item.active = 1;
-			});
+			for (var i = 0, len = $scope.results.length; i < len; i++) {
+			  	var item = $scope.results[i];
+			  	item.qty = 1;
+			  	item.active = 1;
+			}
 		});
 	};
 
 	// Get the stores from the results array
 	var getStores = function(){
-		angular.forEach($scope.results, function(item) {
+		for (var i = 0, len = $scope.results.length; i < len; i++) {
+		  	var item = $scope.results[i];
 			if ($scope.stores.indexOf(item.product) === -1) {
 				$scope.stores.push(item.product);
 		        // alphabetise the list
@@ -38,7 +40,7 @@ angular.module('clientApp')
 
 		        $scope.storeFilter = angular.copy($scope.stores);
 		    }
-		});
+		}
 	};
 
 	// When the results array changes, update the stores list
@@ -51,16 +53,17 @@ angular.module('clientApp')
 	$scope.toggleActiveItem = function(anID){
 		// for making individual items active or inactive
 
-		angular.forEach($scope.results, function(item, index) {
+		for (var i = 0, len = $scope.results.length; i < len; i++) {
+		  	var item = $scope.results[i];
 			if(item.id === anID){
 				if(item.active === 1){
-					$scope.results[index].active = 0;
+					item.active = 0;
 				}
 				else{
-					$scope.results[index].active = 1;
+					item.active = 1;
 				}
 			}
-		});
+		}
 	};
 
 	$scope.toggleActiveItems = function(){
@@ -85,13 +88,14 @@ angular.module('clientApp')
 
 	$scope.total = function() {
 		var total = 0;
-		angular.forEach($scope.results, function(item) {
+		for (var i = 0, len = $scope.results.length; i < len; i++) {
+		  	var item = $scope.results[i];
 			// grabs all the results. We only want to grab the results, taking into account the filter
 			// Also match the active state
 			if($scope.storeFilter.indexOf(item.product) !== -1 && item.active === $scope.showActive){
 				total += item.price * item.qty;
 			}
-		});
+		}
 
 		return total;
 	};
@@ -123,18 +127,20 @@ angular.module('clientApp')
 	};
 
 	$scope.quantityPlus = function(itemID){
-		angular.forEach($scope.results, function(item) {
+		for (var i = 0, len = $scope.results.length; i < len; i++) {
+		  	var item = $scope.results[i];
 			if(item.id === itemID){
 				item.qty++;
 			}
-		});
+		}
 	};
 
 	$scope.quantityMinus = function(itemID){
-		angular.forEach($scope.results, function(item) {
+		for (var i = 0, len = $scope.results.length; i < len; i++) {
+		  	var item = $scope.results[i];
 			if(item.id === itemID && item.qty > 0){
 				item.qty--;
 			}
-		});
+		}
 	};
 });
