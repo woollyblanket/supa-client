@@ -18,7 +18,8 @@
  	'ngTouch',
  	'ui.router',
  	'ui.bootstrap',
- 	'flash'
+ 	'flash',
+ 	'cgBusy'
  	]);
 
 

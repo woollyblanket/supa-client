@@ -8,7 +8,7 @@
 * Controller of the clientApp
 */
 angular.module('clientApp')
-.controller('ResultsCtrl', function ($scope, ShoppingList) {
+.controller('ResultsCtrl', function ($scope, ShoppingList, $log) {
 	$scope.results = [];
 	$scope.stores = [];
 	$scope.storeFilter = [];
@@ -16,39 +16,15 @@ angular.module('clientApp')
 
 	$scope.radioModel = 'Active';
 
-	// will need to do on ng-click when we have the search results
-	var listResults = function(){
-		return ShoppingList.results()
-		.then(function(data){
-			$scope.results = data.data;
-			for (var i = 0, len = $scope.results.length; i < len; i++) {
-			  	var item = $scope.results[i];
-			  	item.qty = 1;
-			  	item.active = 1;
-			}
-		});
-	};
-
-	// Get the stores from the results array
-	var getStores = function(){
-		for (var i = 0, len = $scope.results.length; i < len; i++) {
-		  	var item = $scope.results[i];
-			if ($scope.stores.indexOf(item.product) === -1) {
-				$scope.stores.push(item.product);
-		        // alphabetise the list
-		        $scope.stores.sort();
-
-		        $scope.storeFilter = angular.copy($scope.stores);
-		    }
-		}
-	};
-
-	// When the results array changes, update the stores list
-	$scope.$watchCollection('results', function() {
-		getStores();
+	$scope.listResults = ShoppingList.getResults()
+	.then(function(data){
+		$scope.results = data.data;
+		$scope.stores = ShoppingList.getStores();
+		$scope.storeFilter = angular.copy($scope.stores);
+	})
+	.catch(function(data, status) {
+	    $log.error('ShoppingList getResults error', status, data);
 	});
-
-	listResults();
 
 	$scope.toggleActiveItem = function(anID){
 		// for making individual items active or inactive
@@ -66,16 +42,6 @@ angular.module('clientApp')
 		}
 	};
 
-	$scope.toggleActiveItems = function(){
-		// for showing the active items in the list
-		if($scope.showActive === 1){
-			$scope.showActive = 0;
-		}
-		else{
-			$scope.showActive = 1;
-		}
-	};
-
 	$scope.setActiveItems = function(aBool){
 		// for showing the active items in the list
 		if(aBool === false){
@@ -87,6 +53,8 @@ angular.module('clientApp')
 	};
 
 	$scope.total = function() {
+		// filterWithOr:{product:storeFilter} | filter:{active:showActive}
+
 		var total = 0;
 		for (var i = 0, len = $scope.results.length; i < len; i++) {
 		  	var item = $scope.results[i];
