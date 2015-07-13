@@ -14,13 +14,27 @@
 	cursor: pointer;
 }
 
-.strip:hover, .square:hover{
+.keyword{
+	background-color: $accent;
+	padding: 10px;
+	margin: 10px;
+	display: inline-block;
+	overflow: auto;
+	text-align: center;
+	text-decoration: none;
+	color: $dark-grey;
+	@include roundcorners(5px);
+	font-size: 70%;
+	cursor: pointer;
+}
+
+.strip:hover, .square:hover, .keyword:hover{
 	background-color: $contrast;
 	text-decoration: none;
 	color: $dark-grey;
 }
 
-.square-disabled{
+.square-disabled, .keyword-disabled{
 	opacity: 0.5;
 	background-color: $contrast;
 }

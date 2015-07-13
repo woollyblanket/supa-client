@@ -12,6 +12,8 @@ angular.module('clientApp')
 	$scope.results = [];
 	$scope.stores = [];
 	$scope.storeFilter = [];
+	$scope.keywords = [];
+	$scope.keywordFilter = [];
 	$scope.showActive = 1;
 
 	$scope.radioModel = 'Active';
@@ -21,6 +23,8 @@ angular.module('clientApp')
 		$scope.results = data.data;
 		$scope.stores = ShoppingList.getStores();
 		$scope.storeFilter = angular.copy($scope.stores);
+		$scope.keywords = ShoppingList.getKeywords();
+		$scope.keywordFilter = angular.copy($scope.keywords);
 	})
 	.catch(function(data, status) {
 	    $log.error('ShoppingList getResults error', status, data);
@@ -60,7 +64,7 @@ angular.module('clientApp')
 		  	var item = $scope.results[i];
 			// grabs all the results. We only want to grab the results, taking into account the filter
 			// Also match the active state
-			if($scope.storeFilter.indexOf(item.product) !== -1 && item.active === $scope.showActive){
+			if($scope.storeFilter.indexOf(item.store) !== -1 && $scope.keywordFilter.indexOf(item.keyword) !== -1 && item.active === $scope.showActive){
 				total += item.price * item.qty;
 			}
 		}
@@ -68,21 +72,19 @@ angular.module('clientApp')
 		return total;
 	};
 
-	$scope.toggleActiveStore = function(store){
-		// if the store is in the filters list then it will be included
-		// if it's not in the list, then it will be excluded
-		// add it if it's not there
-		// take it away if it is
-
-		var index = $scope.storeFilter.indexOf(store);
+	$scope.toggleItemInArray = function(item, array){
+		// checks if item is already in the array,
+		// if it is, remove it
+		// if it isn't, add it
+		var index = array.indexOf(item);
 
 		if(index !== -1){
-			// store exists, take it away
-			$scope.storeFilter.splice(index, 1);
+			// item exists, take it away
+			array.splice(index, 1);
 		}
 		else{
-			// store doesn't exist, add it
-			$scope.storeFilter.push(store);
+			// item doesn't exist, add it
+			array.push(item);
 		}
 	};
 

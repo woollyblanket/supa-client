@@ -1,7 +1,16 @@
 <tr>
-	<td>{{ ::item.product}}</td>
-	<td>{{ ::item.category}}</td>
-	<td>{{ ::item.product}}</td>
+	<!--
+	<th>Image</th>
+	<th>Name</th>
+	<th>Store</th>
+	<th>Price</th>
+	<th>Quantity</th>
+	<th>Total</th>
+	<th>Add/Remove</th>
+	 -->
+	<td><img ng-src="{{ ::item.image}}" alt="{{ ::item.name}}" width="100" height="100"/></td>
+	<td>{{ ::item.name}}</td>
+	<td>{{ ::item.store}}</td>
 	<td>{{ ::item.price | currency:"€"}}</td>
 	<td>
 		<!-- <input type="number" ng-model="item.qty" class="input-mini" min=0> -->
