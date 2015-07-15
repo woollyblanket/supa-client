@@ -19,7 +19,8 @@
  	'ui.router',
  	'ui.bootstrap',
  	'flash',
- 	'cgBusy'
+ 	'cgBusy',
+ 	'ui.tree'
  	]);
 
 

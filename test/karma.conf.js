@@ -34,6 +34,7 @@ module.exports = function(config) {
       'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
       'bower_components/angular-flash-alert/dist/angular-flash.js',
       'bower_components/angular-busy/dist/angular-busy.js',
+      'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

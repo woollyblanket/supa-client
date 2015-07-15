@@ -6,15 +6,20 @@
 <div class="well"  cg-busy="listResults">
 
 	<div class="row">
-		<div class="col-md-3 filterContainer">
+		<div class="col-md-2 filterContainer">
 			<a class="strip" ng-click="addAllStores()">Add All Stores</a>
 			<a class="strip" ng-click="clearAllStores()">Clear All Stores</a>
 			<sm-square ng-repeat="store in stores"></sm-square>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-2">
+			<button ng-click="updateCatCount(filteredItemList, categories, 1)">Update Cat Count</button>
+			<sm-category categories="{{categories}}"></sm-category>
+
+		</div>
+		<div class="col-md-8">
 			<div class="table-responsive">
 				<h2>Total: {{total() | currency : "€"}}</h2>
-				<p>Search Terms</p><sm-keyword ng-repeat="item in keywords"></sm-keyword>
+				<sm-keyword ng-repeat="item in keywords"></sm-keyword>
 				<div class="btn-group pull-right">
 				    	<label class="btn btn-default" ng-click="setActiveItems(true)" ng-model="radioModel" btn-radio="'Active'" uncheckable><span class="glyphicon glyphicon-list" aria-hidden="true"></span> View Shopping List</label>
 				        <label class="btn btn-default" ng-click="setActiveItems(false)" ng-model="radioModel" btn-radio="'Inactive'" uncheckable><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> View Trashed Items</label>
@@ -44,7 +49,7 @@
 					    -->
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in results | filterWithOr:{store:storeFilter,keyword:keywordFilter} | filter:{active:showActive} track by item.uniqueID" sm-result></tr>
+						<tr ng-repeat="item in ( filteredItemList = (results | filterWithOr:{store:storeFilter,keyword:keywordFilter} | filter:{active:showActive} )) track by item.uniqueID" sm-result></tr>
 					</tbody>
 				</table>
 			</div>

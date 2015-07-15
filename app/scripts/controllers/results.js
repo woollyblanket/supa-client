@@ -14,6 +14,7 @@ angular.module('clientApp')
 	$scope.storeFilter = [];
 	$scope.keywords = [];
 	$scope.keywordFilter = [];
+	$scope.categories = [];
 	$scope.showActive = 1;
 
 	$scope.radioModel = 'Active';
@@ -25,6 +26,7 @@ angular.module('clientApp')
 		$scope.storeFilter = angular.copy($scope.stores);
 		$scope.keywords = ShoppingList.getKeywords();
 		$scope.keywordFilter = angular.copy($scope.keywords);
+		$scope.categories = ShoppingList.getCategories();
 	})
 	.catch(function(data, status) {
 	    $log.error('ShoppingList getResults error', status, data);
@@ -112,5 +114,9 @@ angular.module('clientApp')
 				item.qty--;
 			}
 		}
+	};
+
+	$scope.updateCatCount = function(filteredItemList, categoriesArray, activeCount){
+		ShoppingList.updateCatCount(filteredItemList, categoriesArray, activeCount);
 	};
 });

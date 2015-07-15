@@ -1,0 +1,17 @@
+<div ui-tree data-drop-enabled="false" data-drag-enabled="false" style="font-size: x-small">
+	<ol ui-tree-nodes="" ng-model="categories">
+		<li ng-repeat="item in categories" ui-tree-node>
+			{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+			<ol ui-tree-nodes="" ng-model="item.children">
+				<li ng-repeat="item in item.children" ui-tree-node>
+					{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+					<ol ui-tree-nodes="" ng-model="item.children">
+						<li ng-repeat="item in item.children" ui-tree-node>
+							{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+						</li>
+					</ol>
+				</li>
+			</ol>
+		</li>
+	</ol>
+</div>
