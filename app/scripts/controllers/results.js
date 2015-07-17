@@ -8,13 +8,15 @@
 * Controller of the clientApp
 */
 angular.module('clientApp')
-.controller('ResultsCtrl', function ($scope, ShoppingList, $log) {
+.controller('ResultsCtrl', function ($scope, ShoppingList, $log, filterWithOrFilter, filterFilter) {
 	$scope.results = [];
+	$scope.filteredResults = [];
 	$scope.stores = [];
 	$scope.storeFilter = [];
 	$scope.keywords = [];
 	$scope.keywordFilter = [];
 	$scope.categories = [];
+	$scope.categoryFilter = [];
 	$scope.showActive = 1;
 
 	$scope.radioModel = 'Active';
@@ -22,15 +24,37 @@ angular.module('clientApp')
 	$scope.listResults = ShoppingList.getResults()
 	.then(function(data){
 		$scope.results = data.data;
+		$scope.filteredResults = $scope.results.slice();
 		$scope.stores = ShoppingList.getStores();
-		$scope.storeFilter = angular.copy($scope.stores);
+		$scope.storeFilter = $scope.stores.slice();
 		$scope.keywords = ShoppingList.getKeywords();
-		$scope.keywordFilter = angular.copy($scope.keywords);
+		$scope.keywordFilter = $scope.keywords.slice();
 		$scope.categories = ShoppingList.getCategories();
+		$scope.categoryFilter = ShoppingList.getCatIDs();
+
+		ShoppingList.updateCatCount($scope.filteredResults, $scope.categories, 1);
 	})
 	.catch(function(data, status) {
 	    $log.error('ShoppingList getResults error', status, data);
 	});
+
+	var filterResults = function(){
+		// Make sure everything is in the filteredResults array before filtering
+		$scope.filteredResults = $scope.results.slice();
+
+		$scope.filteredResults = filterFilter($scope.filteredResults, {active:$scope.showActive} );
+		$scope.filteredResults = filterWithOrFilter($scope.filteredResults, {
+			store:$scope.storeFilter,
+			keyword:$scope.keywordFilter,
+			leafID:$scope.categoryFilter.leafIDs,
+			childID:$scope.categoryFilter.childIDs,
+			parentID:$scope.categoryFilter.parentIDs
+		});
+
+		// Update the cateogry tree counts
+		ShoppingList.updateCatCount($scope.filteredResults, $scope.categories, 1);
+	};
+
 
 	$scope.toggleActiveItem = function(anID){
 		// for making individual items active or inactive
@@ -46,6 +70,8 @@ angular.module('clientApp')
 				}
 			}
 		}
+
+		filterResults();
 	};
 
 	$scope.setActiveItems = function(aBool){
@@ -56,19 +82,16 @@ angular.module('clientApp')
 		else if(aBool === true){
 			$scope.showActive = 1;
 		}
+
+		filterResults();
 	};
 
 	$scope.total = function() {
-		// filterWithOr:{product:storeFilter} | filter:{active:showActive}
 
 		var total = 0;
-		for (var i = 0, len = $scope.results.length; i < len; i++) {
-		  	var item = $scope.results[i];
-			// grabs all the results. We only want to grab the results, taking into account the filter
-			// Also match the active state
-			if($scope.storeFilter.indexOf(item.store) !== -1 && $scope.keywordFilter.indexOf(item.keyword) !== -1 && item.active === $scope.showActive){
-				total += item.price * item.qty;
-			}
+		for (var i = 0, len = $scope.filteredResults.length; i < len; i++) {
+		  	var item = $scope.filteredResults[i];
+		  	total += item.price * item.qty;
 		}
 
 		return total;
@@ -88,14 +111,18 @@ angular.module('clientApp')
 			// item doesn't exist, add it
 			array.push(item);
 		}
+
+		filterResults();
 	};
 
 	$scope.addAllStores = function(){
-		$scope.storeFilter = angular.copy($scope.stores);
+		$scope.storeFilter = $scope.stores.slice();
+		filterResults();
 	};
 
 	$scope.clearAllStores = function(){
 		$scope.storeFilter.length = 0;
+		filterResults();
 	};
 
 	$scope.quantityPlus = function(itemID){
@@ -114,9 +141,5 @@ angular.module('clientApp')
 				item.qty--;
 			}
 		}
-	};
-
-	$scope.updateCatCount = function(filteredItemList, categoriesArray, activeCount){
-		ShoppingList.updateCatCount(filteredItemList, categoriesArray, activeCount);
 	};
 });

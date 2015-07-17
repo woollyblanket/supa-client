@@ -1,13 +1,31 @@
-<div ui-tree data-drop-enabled="false" data-drag-enabled="false" style="font-size: x-small">
+<div ui-tree data-drop-enabled="false" data-drag-enabled="false" class="catTree">
 	<ol ui-tree-nodes="" ng-model="categories">
 		<li ng-repeat="item in categories" ui-tree-node>
-			{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+			<!-- {{item.id}}
+			parent
+			{{categoryFilter.parentIDs}} -->
+			<label>
+			    <input type="checkbox" ng-model="item.active" ng-true-value="1" ng-false-value="0" ng-change="toggleItemInArray(item.id, categoryFilter.parentIDs)">
+				{{::item.name}} <strong>({{item.activeItemCount}}/{{::item.itemCount}})</strong>
+			</label>
 			<ol ui-tree-nodes="" ng-model="item.children">
 				<li ng-repeat="item in item.children" ui-tree-node>
-					{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+					<!-- {{item.id}}
+					child
+					{{categoryFilter.childIDs}} -->
+					<label>
+					    <input type="checkbox" ng-model="item.active" ng-true-value="1" ng-false-value="0" ng-change="toggleItemInArray(item.id, categoryFilter.childIDs)">
+						{{::item.name}} <strong>({{item.activeItemCount}}/{{::item.itemCount}})</strong>
+					</label>
 					<ol ui-tree-nodes="" ng-model="item.children">
 						<li ng-repeat="item in item.children" ui-tree-node>
-							{{item.name}} <strong>({{item.activeItemCount}}/{{item.itemCount}})</strong>
+							<!-- {{item.id}}
+							leaf
+							{{categoryFilter.leafIDs}} -->
+							<label>
+							    <input type="checkbox" ng-model="item.active" ng-true-value="1" ng-false-value="0" ng-change="toggleItemInArray(item.id, categoryFilter.leafIDs)">
+								{{::item.name}} <strong>({{item.activeItemCount}}/{{::item.itemCount}})</strong>
+							</label>
 						</li>
 					</ol>
 				</li>

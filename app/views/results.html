@@ -11,12 +11,11 @@
 			<a class="strip" ng-click="clearAllStores()">Clear All Stores</a>
 			<sm-square ng-repeat="store in stores"></sm-square>
 		</div>
-		<div class="col-md-2">
-			<button ng-click="updateCatCount(filteredItemList, categories, 1)">Update Cat Count</button>
+		<div class="col-md-3">
 			<sm-category categories="{{categories}}"></sm-category>
 
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<div class="table-responsive">
 				<h2>Total: {{total() | currency : "€"}}</h2>
 				<sm-keyword ng-repeat="item in keywords"></sm-keyword>
@@ -49,7 +48,8 @@
 					    -->
 					</thead>
 					<tbody>
-						<tr ng-repeat="item in ( filteredItemList = (results | filterWithOr:{store:storeFilter,keyword:keywordFilter} | filter:{active:showActive} )) track by item.uniqueID" sm-result></tr>
+						<!-- <tr ng-repeat="item in ( filteredItemList = (results | filterWithOr:{store:storeFilter,keyword:keywordFilter} | filter:{active:showActive} )) track by item.uniqueID" sm-result></tr> -->
+						<tr ng-repeat="item in filteredResults" sm-result></tr>
 					</tbody>
 				</table>
 			</div>

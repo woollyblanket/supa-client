@@ -13,6 +13,9 @@
 	var total = 0;
 	var keywords = [];
 	var cats = [];
+	var leafIDs = [];
+	var childIDs = [];
+	var parentIDs = [];
 
 	function arrayObjectIndexOf(myArray, searchTerm, property) {
 		var pos = myArray.map(function(e) {
@@ -22,54 +25,95 @@
 		return pos;
 	}
 
-	function parseCats(categoryString, categoryList){
+	function parseCats(item, categoryList){
 		// 1 - Parse the categories into an array. [0] is parent, [n] is leaf.
 
-		var itemCats = categoryString.split('|');
+		var itemCats = item.category.split('|');
 
 		// 2 - Check if parent exists in categories, if not add it
 
+		var randomParent = Math.random().toString(36).substr(7);
+
+		var index0 = arrayObjectIndexOf(categoryList, itemCats[0], 'name');
+
 		if (arrayObjectIndexOf(categoryList, itemCats[0], 'name') === -1) {
+			item.parentID = randomParent;
+			parentIDs.push(randomParent);
+
 			categoryList.push({
 				name: itemCats[0],
 				itemCount: 0,
 				activeItemCount: 0,
 				active: 0,
-				children: []
+				children: [],
+				id: randomParent
 			});
+		}
+		else{
+
+			if(index0 !== -1){
+				item.parentID = categoryList[index0].id;
+			}
 		}
 
 		// 3 - Check if child exists in parent, if not add it.
-
+		var randomChild = Math.random().toString(36).substr(7);
 		for (var j = 0, lenJ = categoryList.length; j < lenJ; j++) {
 			var child = categoryList[j];
+			var index1 = arrayObjectIndexOf(child.children, itemCats[1], 'name');
 
-			if (child.name === itemCats[0] &&arrayObjectIndexOf(child.children, itemCats[1], 'name') === -1) {
+
+			// if we have the correct parent and the child hasn't been added yet
+			if (child.name === itemCats[0] && arrayObjectIndexOf(child.children, itemCats[1], 'name') === -1) {
+				//console.log('new child', randomChild);
+				item.childID = randomChild;
+
+				childIDs.push(randomChild);
+
 				child.children.push({
 					name : itemCats[1],
 					active: 0,
 					itemCount : 0,
 					activeItemCount: 0,
-					children : []
+					children : [],
+					id: randomChild
 				});
 			}
+			else{
 
+				if(index1 !== -1 && index0 !== -1){
+					item.childID = child.children[index1].id;
+				}
+			}
+
+			var randomLeaf = Math.random().toString(36).substr(7);
 			// 4 - Keep going until we reach the leaf
 			for (var k = 0, lenK = child.children.length; k < lenK; k++) {
 				var leaf = child.children[k];
+				var index2 = arrayObjectIndexOf(leaf.children, itemCats[2], 'name');
 
 				if(leaf.name === itemCats[1] && arrayObjectIndexOf(leaf.children, itemCats[2], 'name') === -1){
+					item.leafID = randomLeaf;
+
+					leafIDs.push(randomLeaf);
+
 					leaf.children.push({
 						name : itemCats[2],
 						active: 0,
 						itemCount : 0,
 						activeItemCount: 0,
-						children : []
+						children : [],
+						id: randomLeaf
 					});
+				}
+				else{
+
+					if(index2 !== -1 && index1 !== -1 && index0 !== -1){
+						item.leafID = leaf.children[index2].id;
+					}
 				}
 			}
 		}
-
 		return categoryList;
 	}
 
@@ -163,7 +207,7 @@
 						keywords.sort();
 					}
 
-					cats = parseCats(item.category, cats);
+					cats = parseCats(item, cats);
 
 				}
 
@@ -184,6 +228,13 @@
 		},
 		getTotal: function(){
 			return total;
+		},
+		getCatIDs: function(){
+			return {
+				leafIDs: leafIDs,
+				childIDs: childIDs,
+				parentIDs: parentIDs
+			};
 		},
 		getCategories: function(){
 			return cats;
