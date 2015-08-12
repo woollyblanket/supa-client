@@ -13,7 +13,8 @@
     	'cgBusy',
     	'flash',
     	'ui.tree',
-    	'angularUtils.directives.dirPagination'
+    	'angularUtils.directives.dirPagination',
+    	'ngLodash'
     ]);
 
 })();

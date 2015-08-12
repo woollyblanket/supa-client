@@ -14,7 +14,7 @@
 		<!-- Backup Image -->
 		<img ng-if="item.image === 'null' || item.image.indexOf('noimage') !== -1" src="http://dummyimage.com/100x100/000/fff" alt="backup" width="100" height="100"/>
 	</td>
-	<td>{{ ::item.name}}</td>
+	<td>{{ ::item.name}}<br>{{ ::item.parentID}}</td>
 	<td>{{ ::item.store}}</td>
 	<td>{{ ::item.price | currency:"€"}}</td>
 	<td>

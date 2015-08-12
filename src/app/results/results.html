@@ -11,11 +11,11 @@
 			<a class="strip" ng-click="clearAllStores()">Clear All Stores</a>
 			<sm-square ng-repeat="store in stores"></sm-square>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<sm-category categories="{{categories}}"></sm-category>
 
 		</div>
-		<div class="col-md-7">
+		<div class="col-md-6">
 			<div class="table-responsive">
 				<h2>Total: {{total() | currency : "€"}}</h2>
 				<sm-keyword ng-repeat="item in keywords"></sm-keyword>

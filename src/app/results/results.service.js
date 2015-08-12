@@ -14,6 +14,10 @@
 		var childIDs = [];
 		var parentIDs = [];
 
+		var leafIDs1 = [];
+		var childIDs1 = [];
+		var parentIDs1 = [];
+
 		function arrayObjectIndexOf(myArray, searchTerm, property) {
 			var pos = myArray.map(function(e) {
 				return e[property];
@@ -35,7 +39,17 @@
 
 			if (arrayObjectIndexOf(categoryList, itemCats[0], 'name') === -1) {
 				item.parentID = randomParent;
+
+				if(parentIDs1.ids){
+					parentIDs1.ids.push(randomParent);
+				}
+				else{
+					parentIDs1.ids = [];
+					parentIDs1.ids.push(randomParent);
+				}
+
 				parentIDs.push(randomParent);
+
 
 				categoryList.push({
 					name: itemCats[0],
@@ -67,6 +81,30 @@
 
 					childIDs.push(randomChild);
 
+					// $log.debug('childIDs1', childIDs1);
+					// $log.debug('child.id', child.id);
+
+					var childObjIndex = arrayObjectIndexOf(childIDs1, child.id, 'parent');
+
+					if(childObjIndex === -1){
+						// parent isn't in the array already, add it
+						// $log.debug(child.id + ' parent not in the array');
+
+						var childObj = {};
+
+						childObj.parent = child.id;
+						childObj.ids = [];
+						childObj.ids.push(randomChild);
+
+						childIDs1.push(childObj);
+					}
+					else{
+						// parent is there, so add the child to ids array
+						// $log.debug(child.id + ' parent is in the array');
+						childIDs1[childObjIndex].ids.push(randomChild);
+
+					}
+
 					child.children.push({
 						name : itemCats[1],
 						active: 0,
@@ -93,6 +131,33 @@
 						item.leafID = randomLeaf;
 
 						leafIDs.push(randomLeaf);
+
+						var leafObjIndex = arrayObjectIndexOf(leafIDs1, leaf.id, 'child');
+
+						if(leafObjIndex === -1){
+							// child isn't in the array already, add it
+							// $log.debug(leaf.id + ' child not in the array');
+
+							var leafObj = {};
+
+							leafObj.parent = child.id;
+							leafObj.child = leaf.id;
+							leafObj.ids = [];
+							leafObj.ids.push(randomLeaf);
+
+							leafIDs1.push(leafObj);
+						}
+						else{
+							// child is there, so add the leaf to ids array
+							// $log.debug(leaf.id + ' child is in the array');
+							leafIDs1[leafObjIndex].ids.push(randomLeaf);
+
+						}
+
+						leafIDs1.parent = child.id;
+						leafIDs1.child = leaf.id;
+						leafIDs1.ids = [];
+						leafIDs1.ids.push(randomLeaf);
 
 						leaf.children.push({
 							name : itemCats[2],
@@ -183,9 +248,12 @@
 				// });
 			},
 			getResults: function () {
-				return $http.get('app/results/results.dummy.json')
+				// return $http.get('app/results/results.dummy.json')
+				return $http.get('app/results/results.dummy.large.json')
+				// return $http.get('app/results/results.dummy.small.json')
 				//return $http.get('http://tranquil-tundra-3993.herokuapp.com/search/milk|cheese|bread')
 				.success(function(response) {
+					$log.debug('response.length',response.length);
 					for (var i = 0, len = response.length; i < len; i++) {
 						var item = response[i];
 						item.qty = 1;
@@ -233,6 +301,13 @@
 					leafIDs: leafIDs,
 					childIDs: childIDs,
 					parentIDs: parentIDs
+				};
+			},
+			getCatIDs1: function(){
+				return {
+					leafIDs: leafIDs1,
+					childIDs: childIDs1,
+					parentIDs: parentIDs1
 				};
 			},
 			getCategories: function(){
