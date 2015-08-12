@@ -28,10 +28,10 @@
 			$scope.keywordFilter = $scope.keywords.slice();
 			$scope.categories = ShoppingList.getCategories();
 			// $scope.categoryFilter = ShoppingList.getCatIDs();
-			$scope.categoryFilter = ShoppingList.getCatIDs1();
-			// $scope.categoryFilter = $scope.categories.slice();
+			//$scope.categoryFilter = ShoppingList.getCatIDs1();
+			 $scope.categoryFilter = $scope.categories.slice();
 
-			ShoppingList.updateCatCount($scope.filteredResults, $scope.categories, 1);
+			//ShoppingList.updateCatCount($scope.filteredResults, $scope.categories, 1);
 		})
 		.catch(function(data, status) {
 		    $log.error('ShoppingList getResults error', status, data);

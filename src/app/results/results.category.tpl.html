@@ -1,9 +1,8 @@
 <div ui-tree data-drop-enabled="false" data-drag-enabled="false" class="catTree">
 	<ol ui-tree-nodes="" ng-model="categories">
 		<li ng-repeat="item in categories" ui-tree-node>
-			{{item.id}}
-			parent
-			{{categoryFilter.parentIDs.ids}}
+			id: {{item.id}}
+			parent: {{item.parentNode}}
 			<label>
 			    <input type="checkbox" ng-model="item.active" ng-true-value="1" ng-false-value="0" ng-change="toggleCategoryFilter(item, 0)">
 				{{::item.name}} <strong>({{item.activeItemCount}}/{{::item.itemCount}})</strong>
