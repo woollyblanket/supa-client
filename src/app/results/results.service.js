@@ -28,13 +28,13 @@
 
 		var catID = 1;
 
-		function arrayObjectIndexOf(myArray, searchTerm, property) {
-			var pos = myArray.map(function(e) {
-				return e[property];
-			}).indexOf(searchTerm);
+		// function arrayObjectIndexOf(myArray, searchTerm, property) {
+		// 	var pos = myArray.map(function(e) {
+		// 		return e[property];
+		// 	}).indexOf(searchTerm);
 
-			return pos;
-		}
+		// 	return pos;
+		// }
 
 		// function parseCats(item, categoryList){
 		// 	// 1 - Parse the categories into an array. [0] is parent, [n] is leaf.
@@ -250,7 +250,7 @@
 
 		function walkUpCatTree(nodeId, input){
 
-			// output is optional, if it's not set, make it an empty array
+			// input is optional, if it's not set, make it an empty array
 			input = (typeof input === 'undefined') ? [] : input;
 			// var parentNodeNames = [];
 
@@ -260,11 +260,11 @@
 
 				// given a node's ID, find its parent's node ID and its name
 
-				var currentNodeId = nodeId;
+				// var currentNodeId = nodeId;
 				//$log.debug('currentNodeId', currentNodeId);
 				var currentNodeIndex = lodash.findIndex(categories, 'id', nodeId);
 				// $log.debug('currentNodeIndex',currentNodeIndex);
-				var currentNodeName = categories[currentNodeIndex].name;
+				// var currentNodeName = categories[currentNodeIndex].name;
 				// $log.debug('currentNodeName',currentNodeName);
 
 				var parentNodeId = categories[currentNodeIndex].parentNode;
@@ -274,67 +274,57 @@
 				var parentNodeName = categories[parentNodeIndex].name;
 				// $log.debug('parentNodeName',parentNodeName);
 
-				input.unshift(parentNodeName);
-				// $log.debug('output',output);
+				input.push(parentNodeName);
+
+				// $log.debug('input',input);
 
 				return walkUpCatTree(parentNodeId,input);
 			}
 			else{
 				// we've reached the root. Stop and return
 				// $log.debug('returning. nodeId is ' + nodeId);
-				 // $log.debug('output',output);
+				// $log.debug('output',output);
+				input.reverse();
 				return input;
 			}
 
 		}
 
-		var parseCategories = function(item){
-			// mostly will be done on the server side. We want the category object to look like this:
-			/*
-				{
-					"name": "root",
-					"id": 1,
-					"parentNode": null,
-					"active": true,
-					"itemCount": 0
-				},
-				{
-					"name": "Bakery",
-					"id":2,
-					"parentNode": 1,
-					"active": true,
-					"itemCount": 0
-				},
-				{
-					"name": "Bread",
-					"id":3,
-					"parentNode": 2,
-					"active": true,
-					"itemCount": 0
-				},
-				{
-					"name": "Wrapped Brown Bread",
-					"id":4,
-					"parentNode": 3,
-					"active": true,
-					"itemCount": 4
-				},
-				{
-					"name": "Traditional,speciality,dietary",
-					"id":5,
-					"parentNode": 3,
-					"active": false,
-					"itemCount": 4
-				},
-				{
-					"name": "Tiger",
-					"id":6,
-					"parentNode": 3,
-					"active": false,
-					"itemCount": 4
-				}
+		function walkTreeForCounts(nodeId){
 
-			*/
+			// get the count of the current node
+			var currentNodeIndex = lodash.findIndex(categories, 'id', nodeId);
+			var currentNodeCount = categories[currentNodeIndex].itemCount;
+
+			// get the count of the parent node
+
+			var parentNodeId = categories[currentNodeIndex].parentNode;
+
+			// stop when the parent node is null as we've reached the root
+			if(parentNodeId !== null){
+				var parentNodeIndex = lodash.findIndex(categories, 'id', parentNodeId);
+				var parentNodeCount = categories[parentNodeIndex].itemCount;
+
+				$log.debug(categories[currentNodeIndex].name,currentNodeCount);
+				$log.debug(categories[parentNodeIndex].name,parentNodeCount);
+				$log.debug(parentNodeCount,'+',currentNodeCount,'=',parentNodeCount + currentNodeCount);
+
+				// add the current node count to the parent node
+				categories[parentNodeIndex].itemCount += currentNodeCount;
+
+				// and repeat
+				walkTreeForCounts(parentNodeId);
+			}
+
+			// start at a leaf
+			// get the parent id
+			// find other leaves with that parent id
+			// add them up
+			// only do this if the parent's count is 0
+		}
+
+		var parseCategories = function(item){
+			// mostly will be done on the server side.
 
 			function pushCat(i){
 				var parentID;
@@ -349,8 +339,6 @@
 
 					// find the item in the categories array which has the name of the
 					// previous item in itemCats and return its id
-
-					// can't do that, the same name might be reused. Have to work by ids
 					parentID = lodash.result(lodash.find(categories, 'name', itemCats[i-1]), 'id');
 				}
 
@@ -359,7 +347,7 @@
 					id: catID,
 					parentNode: parentID,
 					active: false,
-					itemCount: 1
+					itemCount: 0
 				};
 
 				categories.push(category);
@@ -389,7 +377,7 @@
 
 					// parentNode is the id of the previous item in itemCats.
 					// if there isn't a previous item, then the parent is the root
-
+					// $log.debug(catName, ' new Cat');
 					pushCat(i);
 				}
 				else{
@@ -400,11 +388,7 @@
 					// if they don't, then we have a new category with the same name, so
 					// we need to add it with a new ID
 
-					// we already have 'i', which is the current index of the category with '|'
-					// if we step back until we reach 0, we'll get the name of each parent
-					// compare that to the name of the parentNode
-
-					// construct an array with the names of the parents as using the defined parentNode
+					// construct an array with the names of the parents using the defined parentNode
 					// compare that array to itemCats (from index i)
 					// if they match, we have the same category
 
@@ -414,35 +398,40 @@
 					var orginalCatNames = lodash.slice(itemCats, 0, i);
 					orginalCatNames.unshift('root');
 
-					// compare orginalCatNames and catNames. If they match, we have the same category
-					// if they don't match, we have a new category with the same name
-
 					// $log.debug('catNames',catNames);
 					// $log.debug('orginalCatNames',orginalCatNames);
 
 					if(lodash.isEqual(orginalCatNames, catNames)){
 						// same name, same category
 						item.categoryID = categories[index].id;
+						// $log.debug(catName, ' same name, old category');
 
-						categories[index].itemCount++;
+						//categories[index].itemCount++;
 					}
 					else{
 						// same name, different category
 						// create a new entry
-
-						pushCat(i)
+						// $log.debug(catName, ' same name, new category');
+						pushCat(i);
 					}
-
-					// $log.debug('parentNodeNames', parentNodeNames);
-
-
-
-					// update the itemCount
-
-
 				}
 			}
 		};
+
+		function setCategoryCounts(item){
+			// grab the id of the category
+
+			var catID = item.categoryID;
+
+			// for every ID we grab, add 1 to the item counts
+			// this will set the counts for the leafs
+			var index = lodash.findIndex(categories, 'id', catID);
+			categories[index].itemCount++;
+
+			// walk up the tree adding itemCounts as we go
+			walkTreeForCounts(catID);
+
+		}
 
 		// Public API here
 		return {
@@ -483,6 +472,8 @@
 
 						//cats = parseCats(item, cats);
 						parseCategories(item);
+
+						setCategoryCounts(item);
 
 					}
 
