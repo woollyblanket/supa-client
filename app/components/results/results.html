@@ -1,3 +1,14 @@
 <h1>Results</h1>
 
-<div *ngFor="#result of results">{{result.name}}</div>
+<table class="table table-responsive table-striped">
+	<tr *ngFor="#result of results">
+		<td>{{result.id}}</td>
+		<td>{{result.store}}</td>
+		<td>{{result.keyword}}</td>
+		<td>{{result.name}}</td>
+		<td>{{result.price}}</td>
+		<td>{{result.price_desc}}</td>
+		<td>{{result.category}}</td>
+		<td><img [src]="getImageURL(result)" /></td>
+	</tr>
+</table>

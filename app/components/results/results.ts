@@ -18,4 +18,11 @@ export class ResultsCmp {
 				() => console.log('Completed!')
 			);
 	}
+
+	getImageURL(result) {
+		if (result.image === 'null') {
+			result.image = 'http://dummyimage.com/100x100/000000/fff.png&text=No+image';
+		}
+		return result.image;
+	}
 }
