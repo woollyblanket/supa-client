@@ -1,10 +1,20 @@
-<h1>Howdy!</h1>
+<h1>Shopping List</h1>
 
-<h2>
-  Gratz! <smile></smile>
-</h2>
+{{diagnostic}}
 
-<p class="note">
-  Your deployment of Angular 2 Seed worked perfectly!
-  Click <em>about (above)</em> to get your reward!
-</p>
+<!-- <p *ngFor="#item of itemList" style="margin-bottom: 10px;">
+	{{item.name}}<button (click)="removeShoppingListItem(item)">Delete</button>
+</p> -->
+
+<hr>
+
+<input placeholder="name" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem)"/>
+<button (click)="addShoppingListItem(listItem)">Add Item</button>
+
+<div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
+	{{item.name}}
+	<!-- <button type="button" class="close" aria-label="Close" (click)="removeShoppingListItem(item)">
+		<span aria-hidden="true">&times;</span>
+	</button> -->
+	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
+</div>
