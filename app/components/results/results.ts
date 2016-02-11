@@ -9,14 +9,15 @@ import {ResultsService} from '../../services/results';
 })
 export class ResultsCmp { 
 	results: any;
+	stores: Array<string>;
 
-	constructor(ResultsService: ResultsService) {
-		ResultsService.results
-			.subscribe(
-				results => this.results = results,
-				error => console.error('Error: ' + error),
-				() => console.log('Completed!')
-			);
+	constructor(private ResultsService: ResultsService) {
+		this.results = this.ResultsService.getResults();
+		this.stores = this.ResultsService.getStores();
+	}
+
+	get diagnostic() {
+		return JSON.stringify(this.stores);
 	}
 
 	getImageURL(result) {

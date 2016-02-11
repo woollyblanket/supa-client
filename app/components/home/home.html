@@ -2,10 +2,6 @@
 
 {{diagnostic}}
 
-<!-- <p *ngFor="#item of itemList" style="margin-bottom: 10px;">
-	{{item.name}}<button (click)="removeShoppingListItem(item)">Delete</button>
-</p> -->
-
 <hr>
 
 <input placeholder="name" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem)"/>
@@ -13,8 +9,5 @@
 
 <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
 	{{item.name}}
-	<!-- <button type="button" class="close" aria-label="Close" (click)="removeShoppingListItem(item)">
-		<span aria-hidden="true">&times;</span>
-	</button> -->
 	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
 </div>

@@ -1,14 +1,30 @@
 <h1>Results</h1>
 
+{{diagnostic}}
+
 <table class="table table-responsive table-striped">
-	<tr *ngFor="#result of results">
-		<td>{{result.id}}</td>
-		<td>{{result.store}}</td>
-		<td>{{result.keyword}}</td>
-		<td>{{result.name}}</td>
-		<td>{{result.price}}</td>
-		<td>{{result.price_desc}}</td>
-		<td>{{result.category}}</td>
-		<td><img [src]="getImageURL(result)" /></td>
-	</tr>
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Store</th>
+			<th>Keyword</th>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Description</th>
+			<th>Category</th>
+			<th>Image</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr *ngFor="#result of results">
+			<td>{{result.id}}</td>
+			<td>{{result.store}}</td>
+			<td>{{result.keyword}}</td>
+			<td>{{result.name}}</td>
+			<td>{{result.price}}</td>
+			<td>{{result.price_desc}}</td>
+			<td>{{result.category}}</td>
+			<td><img [src]="getImageURL(result)" width=100 height=100/></td>
+		</tr>
+	</tbody>
 </table>
