@@ -1,6 +1,10 @@
 <h1>Results</h1>
 
-{{diagnostic}}
+{{storeFilterItems | json}}
+
+<div class="store" *ngFor="#store of stores">{{store}}
+	<button (click)="toggleStoreFilter(store)">Toggle</button>
+</div>
 
 <table class="table table-responsive table-striped">
 	<thead>
@@ -16,7 +20,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr *ngFor="#result of results">
+		<tr *ngFor="#result of results | storeFilter: storeFilterItems">
 			<td>{{result.id}}</td>
 			<td>{{result.store}}</td>
 			<td>{{result.keyword}}</td>
