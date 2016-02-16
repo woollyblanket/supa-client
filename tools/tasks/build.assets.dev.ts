@@ -9,7 +9,8 @@ export = function buildImagesDev(gulp, plugins) {
         join(APP_SRC, '**/*.png'),
         join(APP_SRC, '**/*.svg'),
         join(APP_SRC, '**/*.css'),
-        join(APP_SRC, '**/*.html')
+        join(APP_SRC, '**/*.html'),
+        join(APP_SRC, '**/*.ico')
       ])
       .pipe(gulp.dest(APP_DEST));
   };

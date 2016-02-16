@@ -18,7 +18,7 @@ export const HOT_LOADER_PORT      = 5578;
 
 export const BOOTSTRAP_MODULE     = ENABLE_HOT_LOADING ? 'hot_loader_bootstrap' : 'bootstrap';
 
-export const APP_TITLE            = 'My Angular2 App';
+export const APP_TITLE            = 'Supamarket';
 
 export const APP_SRC              = 'app';
 export const ASSETS_SRC           = `${APP_SRC}/assets`;
