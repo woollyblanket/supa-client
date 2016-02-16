@@ -12,20 +12,14 @@ import {ResultItem} from './results_item';
 })
 
 /* 
-
 TO DO:
-- Add/remove all stores from the filter - DONE
-- Add filter for keywords
-- Add/remove all keywords from the filter
 - Add filter for categories
 - Add/remove all categories from the filter
 - Construct a category tree
 - Make items active/inactive
 - Add button to show inactive items
-- Add quantity - DONE
-- Sum amounts taking into account the filters applied
-
 */
+
 export class ResultsCmp { 
 	results: any;
 	filteredResults: any;
@@ -33,7 +27,11 @@ export class ResultsCmp {
 	stores: Array<string> = [];
 	storeFilterItems: Array<string> = [];
 
+	keywords: Array<string> = [];
+	keywordFilterItems: Array<string> = [];
+
 	total: number = 0;
+	unfilteredTotal: number = 0;
 
 	constructor(private ResultsService: ResultsService) {
 		this.ResultsService.getResults().subscribe(
@@ -41,7 +39,6 @@ export class ResultsCmp {
 					// populate the results and filteredResults arrays
 					this.results = stuff;
 
-					// this.populateStoresList(stuff);
 					for (var i = 0; i < stuff.length; i++) {
 						var item = stuff[i];
 						this.results[i].qty = 1;
@@ -53,31 +50,31 @@ export class ResultsCmp {
 							// alphabetise the list
 							this.stores.sort();
 						}
-					}
 
+						if (this.keywords.indexOf(item.keyword) === -1) {
+							this.keywords.push(item.keyword);
+							// alphabetise the list
+							this.keywords.sort();
+						}
+					}
+					this.unfilteredTotal = this.total;
 					this.filteredResults = this.results.slice();
 					this.addAllStoresToFilter();
+					this.addAllKeywordsToFilter();
 				},
 				err => console.error(err),
 				() => console.log('done loading results')
 			);
 	}
 
-	toggleStoreFilter(store) {
-		// ensure the storeFilterItems array has the stores required
-		var index = this.storeFilterItems.indexOf(store);
-		// have to use this temp array as pipes don't do deep change detection
-		// creating a new array and overwriting the old one fixes this
-		// slice() creates a new duplicate of an array
-		var temp = this.storeFilterItems;
+	toggleFilter(item, filterList) {
+		var index = filterList.indexOf(item);
 		if (index !== -1) {
 			// store is there, remove store
-			temp.splice(index, 1);
-			this.storeFilterItems = temp.slice();
+			filterList.splice(index, 1);
 		} else {
 			// store isn't there, add it
-			temp.push(store);
-			this.storeFilterItems = temp.slice();
+			filterList.push(item);
 		}
 
 		// update results
@@ -86,6 +83,7 @@ export class ResultsCmp {
 	
 	// create a function for adding/removing items from the filtered results as needed
 	updateFilteredResults() {
+		// start with nothing included
 		var updatedResults = [];
 		this.total = 0;
 
@@ -96,11 +94,14 @@ export class ResultsCmp {
 			for (var j = 0; j < this.storeFilterItems.length; j++) {
 				var store = this.storeFilterItems[j];
 
-				if(store === item.store) {
-					updatedResults.push(item);
-					this.total += item.price * item.qty;
-				}
+				for (var k = 0; k < this.keywordFilterItems.length; k++) {
+					var keyword = this.keywordFilterItems[k];
 
+					if (keyword === item.keyword && store === item.store) {
+						updatedResults.push(item);
+						this.total += item.price * item.qty;
+					}
+				}
 			}
 		}
 
@@ -118,11 +119,22 @@ export class ResultsCmp {
 		this.total = 0;
 	}
 
+	addAllKeywordsToFilter() {
+		this.keywordFilterItems = this.keywords.slice();
+		this.updateFilteredResults();
+	}
+
+	removeAllKeywordsFromFilter() {
+		this.keywordFilterItems = [];
+		this.filteredResults = [];
+		this.total = 0;
+	}
+
 	incTotal(item) {
-		this.total += item.price * item.qty;
+		this.total += item.price;
 	}
 
 	decTotal(item) {
-		this.total -= item.price * item.qty;
+		this.total -= item.price;
 	}
 }

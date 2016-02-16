@@ -1,13 +1,26 @@
 <h1>Results</h1>
-
-{{storeFilterItems | json}}
-
-<div class="store" *ngFor="#store of stores">{{store}}
-	<button (click)="toggleStoreFilter(store)">Toggle</button>
+<div class="row">
+	<div class="col-md-3">
+		<div class="store" *ngFor="#store of stores">
+			<button class="btn btn-default" (click)="toggleFilter(store, storeFilterItems)">{{store}}</button>
+		</div>
+		{{storeFilterItems | json}}
+	</div>
+	<div class="col-md-3">
+		<button class="btn btn-default" (click)="addAllStoresToFilter()">Add All Stores to Filter</button>
+		<button class="btn btn-default" (click)="removeAllStoresFromFilter()">Remove All Stores from Filter</button>
+	</div>
+	<div class="col-md-3">
+		<div class="keyword" *ngFor="#keyword of keywords">
+			<button class="btn btn-default" (click)="toggleFilter(keyword, keywordFilterItems)">{{keyword}}</button>
+		</div>
+		{{keywordFilterItems | json}}
+	</div>
+	<div class="col-md-3">
+		<button class="btn btn-default" (click)="addAllKeywordsToFilter()">Add All Keywords to Filter</button>
+		<button class="btn btn-default" (click)="removeAllKeywordsFromFilter()">Remove All Keywords from Filter</button>
+	</div>
 </div>
-<button (click)="addAllStoresToFilter()">Add All Stores to Filter</button>
-<button (click)="removeAllStoresFromFilter()">Remove All Stores from Filter</button>
-
 <h3>
 	Total: {{total | currency: "EUR":true:"1.2-2"}}
 </h3>
