@@ -6,8 +6,10 @@ import {Component, Input, Output, EventEmitter} from 'angular2/core';
 })
 export class ResultItem {
 	@Input() result: any;
+	@Input() active: boolean;
 	@Output() qtyInc: EventEmitter<any> = new EventEmitter();
 	@Output() qtyDec: EventEmitter<any> = new EventEmitter();
+	@Output() activeChange: EventEmitter<any> = new EventEmitter();
 	
 	getImageURL(result) {
 		if (result.image === 'null') {
@@ -30,5 +32,10 @@ export class ResultItem {
 			item.qty++;
 			this.qtyInc.emit(null);
 		}
-	};
+	}
+
+	toggleActiveItem(result) {
+		result.active = !result.active;
+		this.activeChange.emit(null);
+	}
 }

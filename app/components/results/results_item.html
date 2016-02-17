@@ -1,20 +1,52 @@
-<div class="col-md-1">{{result.id}}</div>
-<div class="col-md-1">{{result.store}}</div>
-<div class="col-md-1">{{result.keyword}}</div>
-<div class="col-md-2">{{result.name}}</div>
-<div class="col-md-1">{{result.price | currency: "EUR":true:"1.2-2"}}</div>
-<div class="col-md-1">{{result.price_desc}}</div>
-<div class="col-md-2">{{result.category}}</div>
-<div class="col-md-1"><img [src]="getImageURL(result)" width=100 height=100/></div>
-<div class="col-md-1">
-	<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
-		<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal, true)">
-			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-		</button>
-	  	<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal)">
-	  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-	  	</button>
+<p class="lead">
+	<span class="label label-info">{{result.store}}</span> - {{result.name}}
+	<span class="pull-right">{{result.price * result.qty | currency: "EUR":true:"1.2-2"}}</span>
+</p>
+<div class="row">
+	<div class="col-md-2">
+    	<div class="thumbnail">
+      		<img [src]="getImageURL(result)" width=100 height=100 alt="result.name"/>
+    	</div>		
 	</div>
-	<span class="badge">{{result.qty}}</span>
+	<div class="col-md-4">
+		<div class="label label-success">{{result.keyword}}</div>
+		<div class="label label-primary">{{result.category}}</div>
+	</div>
+	<div class="col-md-4">
+		<div class="table-responsive">
+		  <table class="table">
+		    <thead>
+		    	<th>Quantity</th>
+		    	<th>Price</th>
+		    	<th>Price Description</th>
+		    </thead>
+		    <tbody>
+		    	<tr>
+		    		<td>
+		    			<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
+		    			  	<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal)">
+		    			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		    			  	</button>
+		    			  	<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal, true)">
+		    					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+		    				</button>
+		    			</div>
+		    			<span class="badge">{{result.qty}}</span>
+		    		</td>
+		    		<td>{{result.price | currency: "EUR":true:"1.2-2"}}</td>
+		    		<td>{{result.price_desc}}</td>
+		    	</tr>
+		    </tbody>
+		  </table>
+		</div>
+	</div>
+	<div class="col-md-2">
+		<button type="button" class="btn btn-success btn-xs pull-right" (click)="toggleActiveItem(result)" *ngIf="!active">
+			<span class="glyphicon glyphicon-share-alt icon-flipped" aria-hidden="true"></span> Restore
+		</button>
+
+		<button type="button" class="btn btn-danger btn-xs pull-right" (click)="toggleActiveItem(result)" *ngIf="active"> 
+			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		</button>
+	</div>
 </div>
-<div class="col-md-1">{{result.price * result.qty | currency: "EUR":true:"1.2-2"}}</div>

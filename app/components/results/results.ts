@@ -2,13 +2,14 @@ import {Component} from 'angular2/core';
 import {ResultsService} from '../../services/results';
 import {StorePipe} from './store_pipe';
 import {ResultItem} from './results_item';
+import {NgClass} from 'angular2/common';
 
 @Component({
 	pipes: [StorePipe],
 	templateUrl: './components/results/results.html',
 	styleUrls: ['./components/results/results.css'],
 	providers: [ResultsService],
-	directives: [ResultItem]
+	directives: [ResultItem,NgClass]
 })
 
 /* 
@@ -16,13 +17,12 @@ TO DO:
 - Add filter for categories
 - Add/remove all categories from the filter
 - Construct a category tree
-- Make items active/inactive
-- Add button to show inactive items
 */
 
 export class ResultsCmp { 
 	results: any;
 	filteredResults: any;
+	filteredResultsInactive: any = [];
 
 	stores: Array<string> = [];
 	storeFilterItems: Array<string> = [];
@@ -33,6 +33,8 @@ export class ResultsCmp {
 	total: number = 0;
 	unfilteredTotal: number = 0;
 
+	showActive: boolean = true;
+
 	constructor(private ResultsService: ResultsService) {
 		this.ResultsService.getResults().subscribe(
 			stuff => {
@@ -42,6 +44,7 @@ export class ResultsCmp {
 					for (var i = 0; i < stuff.length; i++) {
 						var item = stuff[i];
 						this.results[i].qty = 1;
+						this.results[i].active = true;
 
 						this.total += item.price;
 
@@ -85,6 +88,7 @@ export class ResultsCmp {
 	updateFilteredResults() {
 		// start with nothing included
 		var updatedResults = [];
+		var updatedResultsInactive = [];
 		this.total = 0;
 
 		// update results based on stores in the store filter
@@ -98,13 +102,18 @@ export class ResultsCmp {
 					var keyword = this.keywordFilterItems[k];
 
 					if (keyword === item.keyword && store === item.store) {
-						updatedResults.push(item);
-						this.total += item.price * item.qty;
+						if(item.active) {
+							updatedResults.push(item);
+							this.total += item.price * item.qty;
+						} else {
+							updatedResultsInactive.push(item);
+						}
+						
 					}
 				}
 			}
 		}
-
+		this.filteredResultsInactive = updatedResultsInactive;
 		this.filteredResults = updatedResults;
 	}
 
@@ -136,5 +145,15 @@ export class ResultsCmp {
 
 	decTotal(item) {
 		this.total -= item.price;
+	}
+
+	showActiveItems(aBool) {
+		if(aBool) {
+			// show active
+			this.showActive = true;
+		} else {
+			// show inactive
+			this.showActive = false;
+		}
 	}
 }

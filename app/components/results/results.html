@@ -1,43 +1,64 @@
 <h1>Results</h1>
-<div class="row">
-	<div class="col-md-3">
-		<div class="store" *ngFor="#store of stores">
-			<button class="btn btn-default" (click)="toggleFilter(store, storeFilterItems)">{{store}}</button>
-		</div>
-		{{storeFilterItems | json}}
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">
+			Total: {{total | currency: "EUR":true:"1.2-2"}}
+		</h3>
 	</div>
-	<div class="col-md-3">
-		<button class="btn btn-default" (click)="addAllStoresToFilter()">Add All Stores to Filter</button>
-		<button class="btn btn-default" (click)="removeAllStoresFromFilter()">Remove All Stores from Filter</button>
+	<div class="panel-body">
+	    <div class="row">
+	    	<div class="col-md-4">
+	    		<p>Store Filter</p>
+	    		<!-- {{storeFilterItems | json}} -->
+	    		<div class="btn-group">
+	    			<button *ngFor="#store of stores" class="btn btn-default" (click)="toggleFilter(store, storeFilterItems)" [ngClass]="{'active': storeFilterItems.indexOf(store) === -1}" aria-pressed="true">{{store}}</button>
+	    		</div>
+	    		<div class="btn-group">
+		    		<button class="btn btn-success" (click)="addAllStoresToFilter()">
+		    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All
+		    		</button>
+		    		<button class="btn btn-danger" (click)="removeAllStoresFromFilter()">
+		    			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> All
+		    		</button>
+		    	</div>
+	    	</div>
+	    	<div class="col-md-4">
+	    		<p>Keyword Filter</p>
+	    		<!-- {{keywordFilterItems | json}} -->
+	    		<div class="btn-group">
+	    			<button *ngFor="#keyword of keywords" class="btn btn-default" (click)="toggleFilter(keyword, keywordFilterItems)" [ngClass]="{'active': keywordFilterItems.indexOf(keyword) === -1}" aria-pressed="true">{{keyword}}</button>
+	    		</div>
+	    		<div class="btn-group">
+		    		<button class="btn btn-success" (click)="addAllKeywordsToFilter()">
+		    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All
+		    		</button>
+		    		<button class="btn btn-danger" (click)="removeAllKeywordsFromFilter()">
+		    			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> All
+		    		</button>
+		    	</div>
+	    	</div>
+	    	<div class="col-md-4">
+	    		<p>Staus Filter</p>
+	    		<div class="btn-group">
+	    	    	<button class="btn btn-info" (click)="showActiveItems(true)" btn-radio="'Active'" uncheckable [ngClass]="{'active': showActive}" aria-pressed="true">
+	    	    		<span class="glyphicon glyphicon-list" aria-hidden="true"></span> View Shopping List
+	    	    	</button>
+	    	        <button class="btn btn-info" (click)="showActiveItems(false)" btn-radio="'Inactive'" uncheckable [ngClass]="{'active': !showActive}" aria-pressed="true">
+	    	        	<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> View Trashed Items
+	    	        </button>
+	    	    </div>
+	    	</div>
+	    </div>
 	</div>
-	<div class="col-md-3">
-		<div class="keyword" *ngFor="#keyword of keywords">
-			<button class="btn btn-default" (click)="toggleFilter(keyword, keywordFilterItems)">{{keyword}}</button>
-		</div>
-		{{keywordFilterItems | json}}
-	</div>
-	<div class="col-md-3">
-		<button class="btn btn-default" (click)="addAllKeywordsToFilter()">Add All Keywords to Filter</button>
-		<button class="btn btn-default" (click)="removeAllKeywordsFromFilter()">Remove All Keywords from Filter</button>
-	</div>
-</div>
-<h3>
-	Total: {{total | currency: "EUR":true:"1.2-2"}}
-</h3>
-
-<div class="row">
-	<div class="col-md-1">ID</div>
-	<div class="col-md-1">Store</div>
-	<div class="col-md-1">Keyword</div>
-	<div class="col-md-2">Name</div>
-	<div class="col-md-1">Price</div>
-	<div class="col-md-1">Description</div>
-	<div class="col-md-2">Category</div>
-	<div class="col-md-1">Image</div>
-	<div class="col-md-1">Quantity</div>
-	<div class="col-md-1">Total</div>
-</div>
-<div class="row" *ngFor="#result of filteredResults">
-	<result-item [result]="result" (qtyInc)="incTotal(result)" (qtyDec)="decTotal(result)"></result-item>
+	<ul class="list-group" *ngIf="showActive">
+	    <li class="list-group-item" *ngFor="#result of filteredResults" >
+	    	<result-item [active]="showActive" [result]="result" (qtyInc)="incTotal(result)" (qtyDec)="decTotal(result)" (activeChange)="updateFilteredResults()"></result-item>
+	    </li>
+	</ul>
+	<ul class="list-group" *ngIf="!showActive">
+	    <li class="list-group-item" *ngFor="#result of filteredResultsInactive" >
+	    	<result-item [result]="result" (qtyInc)="incTotal(result)" (qtyDec)="decTotal(result)" (activeChange)="updateFilteredResults()"></result-item>
+	    </li>
+	</ul>
 </div>
 		
