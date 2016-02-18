@@ -54,6 +54,9 @@ export const NPM_DEPENDENCIES = [
   { src: 'angular2/bundles/router.js', inject: 'libs', dest: LIB_DEST }, // use router.min.js with alpha47
   { src: 'angular2/bundles/http.min.js', inject: 'libs', dest: LIB_DEST },
 
+  // { src: 'bootstrap/dist/js/bootstrap.js', inject: 'libs', dest: LIB_DEST},
+  { src: 'underscore/underscore.js', inject: 'libs', dest: LIB_DEST },
+
   { src: 'bootstrap/dist/css/bootstrap.min.css', inject: true, dest: CSS_DEST },
 
   { src: 'ng2-material/dist/ng2-material.css', inject: true, dest: CSS_DEST },
@@ -62,7 +65,8 @@ export const NPM_DEPENDENCIES = [
 
 // Declare local files that needs to be injected
 export const APP_ASSETS = [
-  { src: `${ASSETS_SRC}/main.css`, inject: true, dest: CSS_DEST }
+  { src: `${ASSETS_SRC}/main.css`, inject: true, dest: CSS_DEST },
+  { src: `${ASSETS_SRC}/favicon.ico`, inject: true, dest: CSS_DEST }
 ];
 
 NPM_DEPENDENCIES
@@ -78,6 +82,8 @@ const SYSTEM_CONFIG_DEV = {
   defaultJSExtensions: true,
   paths: {
     'bootstrap': `${APP_ROOT}bootstrap`,
+    'underscore': `${APP_BASE}node_modules/underscore/underscore.js`, 
+    'moment': `${APP_BASE}node_modules/moment/moment.js`, 
     'hot_loader_bootstrap': `${APP_ROOT}hot_loader_bootstrap`,
     '*': `${APP_BASE}node_modules/*`
   }

@@ -61,6 +61,18 @@
     },
     "gulp-sass/gulp-sass.d.ts": {
       "commit": "984a41af67d76b5134e0d4991a30f813dfb8561f"
+    },
+    "underscore/underscore.d.ts": {
+      "commit": "99c4fb76b5d941939ba53e61d0daee4bd74f150f"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "99c4fb76b5d941939ba53e61d0daee4bd74f150f"
+    },
+    "moment/moment.d.ts": {
+      "commit": "99c4fb76b5d941939ba53e61d0daee4bd74f150f"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "99c4fb76b5d941939ba53e61d0daee4bd74f150f"
     }
   }
 }

@@ -3,13 +3,15 @@ import {ResultsService} from '../../services/results';
 import {StorePipe} from './store_pipe';
 import {ResultItem} from './results_item';
 import {NgClass} from 'angular2/common';
+import * as _ from 'underscore'; 
+import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
 	pipes: [StorePipe],
 	templateUrl: './components/results/results.html',
 	styleUrls: ['./components/results/results.css'],
 	providers: [ResultsService],
-	directives: [ResultItem,NgClass]
+	directives: [ResultItem,NgClass,DROPDOWN_DIRECTIVES]
 })
 
 /* 
@@ -46,7 +48,7 @@ export class ResultsCmp {
 						this.results[i].qty = 1;
 						this.results[i].active = true;
 
-						this.total += item.price;
+						this.total += item.price; 
 
 						if (this.stores.indexOf(item.store) === -1) {
 							this.stores.push(item.store);
@@ -63,9 +65,9 @@ export class ResultsCmp {
 					this.unfilteredTotal = this.total;
 					this.filteredResults = this.results.slice();
 					this.addAllStoresToFilter();
-					this.addAllKeywordsToFilter();
+					this.addAllKeywordsToFilter(); 
 				},
-				err => console.error(err),
+				err => console.error(err), 
 				() => console.log('done loading results')
 			);
 	}
@@ -147,7 +149,7 @@ export class ResultsCmp {
 		this.total -= item.price;
 	}
 
-	showActiveItems(aBool) {
+	showActiveItems(aBool) { 
 		if(aBool) {
 			// show active
 			this.showActive = true;
@@ -155,5 +157,13 @@ export class ResultsCmp {
 			// show inactive
 			this.showActive = false;
 		}
+	}
+
+	sortBy(property: string) {
+		this.filteredResults = _.sortBy(this.filteredResults, property);
+	}
+
+	sortByDec(property: string) {
+		this.filteredResults = _.sortBy(this.filteredResults, property).reverse();
 	}
 }

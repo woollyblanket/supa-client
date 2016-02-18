@@ -12,8 +12,8 @@ export class ResultItem {
 	@Output() activeChange: EventEmitter<any> = new EventEmitter();
 	
 	getImageURL(result) {
-		if (result.image === 'null') {
-			result.image = 'http://dummyimage.com/100x100/000000/fff.png&text=No+image';
+		if (result.image === null) {
+			result.image = './assets/img/image.png';
 		}
 		return result.image;
 	}
