@@ -6,6 +6,7 @@ import {ShoppingListItem} from './shoppinglist_item';
 import {NgClass} from 'angular2/common';
 import * as _ from 'underscore'; 
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {RouteParams, Router} from 'angular2/router';
 
 @Component({
 	pipes: [StorePipe],
@@ -53,8 +54,9 @@ export class ResultsCmp {
 	// qunatities 
 	shoppinglistTotal: number = 0;
 
-	constructor(private ResultsService: ResultsService) {
-		this.ResultsService.getResults().subscribe(
+	constructor(private ResultsService: ResultsService, private Router: Router, private RouteParams: RouteParams ) {
+		let searchTerms = this.RouteParams.get('searchTerms');
+		this.ResultsService.getResults(searchTerms).subscribe(
 			stuff => {
 
 					// populate the results and filteredResults arrays
