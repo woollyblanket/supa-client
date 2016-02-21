@@ -8,11 +8,15 @@
       		<img [src]="getImageURL(item)" width=128 height=128 alt="item.name"/>
     	</div>		
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-3">
 		<div class="label label-success">{{item.keyword}}</div>
-		<div class="label label-primary">{{item.category}}</div>
+		<div *ngFor="#category of item.categories">
+			<div class="label label-primary" >
+			<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
+			</div>
+		</div>
 	</div>
-	<div class="col-md-4">
+	<div class="col-md-5">
 		<div class="table-responsive">
 		  <table class="table">
 		    <thead>

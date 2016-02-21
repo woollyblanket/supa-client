@@ -1,13 +1,17 @@
 <h1>Shopping List</h1>
 
-{{diagnostic}}
+{{itemlist | json}}
 
 <hr>
 
-<input placeholder="name" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem)"/>
-<button (click)="addShoppingListItem(listItem)">Add Item</button>
-
-<div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
-	{{item.name}}
-	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
+<div>
+    <input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem)"/>
+    <button (click)="addShoppingListItem(listItem)">Add Item</button>
+    <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
+		{{item.name}}
+		<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
+	</div>
+    <ul>
+        <li (click)="addShoppingListItem(item)" *ngFor="#item of items | async">{{item}}</li>
+    </ul>
 </div>

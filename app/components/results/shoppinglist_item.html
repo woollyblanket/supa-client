@@ -7,14 +7,14 @@
 	<div class="col-md-8">
 		<div class="row">
 			<div class="col-md-9">
-				<p>{{item.name}}</p>
+				<p><span class="label label-info">{{item.store}}</span> {{item.name}}</p>
 			</div>
 			<div class="col-md-3">
 				<span class="pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</span>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-4">
+			<div class="col-md-8">
 				<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
 				  	<button type="button" class="btn btn-info" (click)="quantityChange(item, grandTotal, true)">
 						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
@@ -26,9 +26,6 @@
 				<span class="badge">{{item.qty}}</span>
 				
 				<p>{{item.price | currency: "EUR":true:"1.2-2"}}</p>
-			</div>
-			<div class="col-md-4">
-				<span class="label label-info">{{item.store}}</span>
 			</div>
 			<div class="col-md-4">
 				<button type="button" class="btn btn-danger btn-xs pull-right" (click)="removeItem(item)"> 

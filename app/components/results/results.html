@@ -17,8 +17,8 @@
 			    		Sort <span class="caret"></span>
 			    		</button>
 			    		<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Price - Low to High</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Price - High to Low</a></li>
+			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - Low to High</a></li>
+			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - High to Low</a></li>
 			    			<li role="separator" class="divider"></li>
 			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'name')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - A to Z</a></li>
 			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'name')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - Z to A</a></li>
@@ -80,11 +80,35 @@
 	<div class="col-md-4">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">
-					Shopping List
-				</h3>
-				<p>Total: {{shoppinglistTotal | currency: "EUR":true:"1.2-2"}}</p>
-				<p>{{shoppinglist?.length}} items</p>
+				<div class="row">
+					<div class="col-md-8">
+						<h3 class="panel-title">
+							Shopping List
+						</h3>
+						<p>Total: {{shoppinglistTotal | currency: "EUR":true:"1.2-2"}}</p>
+						<p>{{shoppinglist?.length}} items</p>
+					</div>
+					<div class="col-md-4">
+						<div class="btn-group pull-right" dropdown>
+				    		<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
+				    		Sort <span class="caret"></span>
+				    		</button>
+				    		<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - Low to High</a></li>
+				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'price')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - High to Low</a></li>
+				    			<li role="separator" class="divider"></li>
+				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'name')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - A to Z</a></li>
+				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'name')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - Z to A</a></li>
+				    			<li role="separator" class="divider"></li>
+				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - Low to High</a></li>
+				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - High to Low</a></li>
+				    			<li role="separator" class="divider"></li>
+				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'store')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - A to Z</a></li>
+				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist,'store')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - Z to A</a></li>
+				    		</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 		
 			<ul class="list-group" > <!-- *ngIf="!showActive"> -->

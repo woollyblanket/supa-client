@@ -63,7 +63,8 @@ export class ResultsCmp {
 					var extraProperties = {
 						qty: 1,
 						// if the item is added to the shopping list
-						added: false
+						added: false,
+						categories: []
 					};
 
 					var aTotal: number = 0;
@@ -71,6 +72,7 @@ export class ResultsCmp {
 					_.each(this.results, function(value :any, key:any, obj:any) { 
 						value = _.extend(value, extraProperties);
 						aTotal += value.price; 
+						value.categories = value.category.split('|');
 					});
 
 					// get the stores and keywords from the results
