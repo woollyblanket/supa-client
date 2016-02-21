@@ -1,16 +1,16 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
 
 @Component({
-	selector: 'result-item',
-	templateUrl: './components/results/results_item.html'
+	selector: 'shoppinglist-item',
+	templateUrl: './components/results/shoppinglist_item.html'
 })
-export class ResultItem {
+export class ShoppingListItem {
 	@Input() item: any;
 	@Input() active: boolean;
 	@Output() qtyInc: EventEmitter<any> = new EventEmitter();
 	@Output() qtyDec: EventEmitter<any> = new EventEmitter();
-	@Output() itemAddedToShoppingList: EventEmitter<any> = new EventEmitter();
-	
+	@Output() itemRemovedFromeShoppingList: EventEmitter<any> = new EventEmitter();
+
 	getImageURL(item) {
 		if (item.image === null) {
 			item.image = './assets/img/image.png';
@@ -34,8 +34,8 @@ export class ResultItem {
 		}
 	}
 
-	addItem(item) {
-		item.added = true;
-		this.itemAddedToShoppingList.emit(null);
+	removeItem(item) {
+		item.added = false;
+		this.itemRemovedFromeShoppingList.emit(null);
 	}
 }

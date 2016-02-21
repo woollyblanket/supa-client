@@ -2,6 +2,7 @@ import {Component} from 'angular2/core';
 import {ResultsService} from '../../services/results';
 import {StorePipe} from './store_pipe';
 import {ResultItem} from './results_item';
+import {ShoppingListItem} from './shoppinglist_item';
 import {NgClass} from 'angular2/common';
 import * as _ from 'underscore'; 
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
@@ -11,7 +12,7 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 	templateUrl: './components/results/results.html',
 	styleUrls: ['./components/results/results.css'],
 	providers: [ResultsService],
-	directives: [ResultItem,NgClass,DROPDOWN_DIRECTIVES]
+	directives: [ResultItem, ShoppingListItem, NgClass, DROPDOWN_DIRECTIVES]
 })
 
 /* 
@@ -22,148 +23,182 @@ TO DO:
 */
 
 export class ResultsCmp { 
+	// unmodified results recieved from the API
 	results: any;
+	// results after this user has filtered them
 	filteredResults: any;
-	filteredResultsInactive: any = [];
+	
+	// list of items the user wants to buy
+	shoppinglist: any = [];
 
+	// dynamically populated list of stores based on the results returned 
+	// from the API
 	stores: Array<string> = [];
+	// stores to filter the item lists by
 	storeFilterItems: Array<string> = [];
 
+	// dynamically populated list of keywords based on the results returned 
+	// from the API
 	keywords: Array<string> = [];
+	// keywords to filter the item lists by
 	keywordFilterItems: Array<string> = [];
 
+	// overall total of results taking into account quantity and items added
+	// or removed from the list
+	resultsTotal: number = 0;
+	// overall total of results before modification
 	total: number = 0;
-	unfilteredTotal: number = 0;
 
-	showActive: boolean = true;
+	// overall total of items added to the shopping list, taking into account
+	// qunatities 
+	shoppinglistTotal: number = 0;
 
 	constructor(private ResultsService: ResultsService) {
 		this.ResultsService.getResults().subscribe(
 			stuff => {
+
 					// populate the results and filteredResults arrays
 					this.results = stuff;
 
-					for (var i = 0; i < stuff.length; i++) {
-						var item = stuff[i];
-						this.results[i].qty = 1;
-						this.results[i].active = true;
+					var extraProperties = {
+						qty: 1,
+						// if the item is added to the shopping list
+						added: false
+					};
 
-						this.total += item.price; 
+					var aTotal: number = 0;
 
-						if (this.stores.indexOf(item.store) === -1) {
-							this.stores.push(item.store);
-							// alphabetise the list
-							this.stores.sort();
-						}
+					_.each(this.results, function(value :any, key:any, obj:any) { 
+						value = _.extend(value, extraProperties);
+						aTotal += value.price; 
+					});
 
-						if (this.keywords.indexOf(item.keyword) === -1) {
-							this.keywords.push(item.keyword);
-							// alphabetise the list
-							this.keywords.sort();
-						}
-					}
-					this.unfilteredTotal = this.total;
+					// get the stores and keywords from the results
+					this.stores = _.uniq(_.pluck(this.results, 'store'));
+					this.keywords = _.uniq(_.pluck(this.results, 'keyword')); 
+
+					// set the filters
+					this.storeFilterItems = this.stores.slice();
+					this.keywordFilterItems = this.keywords.slice();
+
+					// set the results and total
 					this.filteredResults = this.results.slice();
-					this.addAllStoresToFilter();
-					this.addAllKeywordsToFilter(); 
+					this.total = aTotal;
+					this.resultsTotal = aTotal;
+
 				},
 				err => console.error(err), 
 				() => console.log('done loading results')
 			);
 	}
 
+	// add/remove items from the filterList
 	toggleFilter(item, filterList) {
+		console.log('toggleFilter called');
 		var index = filterList.indexOf(item);
 		if (index !== -1) {
-			// store is there, remove store
+			// item is there, remove item
 			filterList.splice(index, 1);
 		} else {
-			// store isn't there, add it
+			// item isn't there, add it
 			filterList.push(item);
 		}
 
-		// update results
 		this.updateFilteredResults();
+		this.resultsTotal = this.getTotal(this.filteredResults);
 	}
-	
-	// create a function for adding/removing items from the filtered results as needed
+
+	updateListByFilter(masterList: Array<any>, filterList: Array<any>, property: string) {
+		console.log('updateListByFilter called');
+		// the list has been filtered. For example, by adding/removing a store
+
+		// masterlist = the set of all possible items
+		// filterList = an array of filters we want to filter by
+		// property = what we want to apply the filterList to
+		return _.filter(masterList, function(item) {
+			return _.contains(filterList, item[property]) && !item.added;
+		});
+	}
+
 	updateFilteredResults() {
-		// start with nothing included
-		var updatedResults = [];
-		var updatedResultsInactive = [];
-		this.total = 0;
+		var updatedStoreList = this.updateListByFilter(this.results, this.storeFilterItems, 'store');
+		var updatedKeywordLists = this.updateListByFilter(this.results, this.keywordFilterItems, 'keyword');
 
-		// update results based on stores in the store filter
-		for (var i = 0; i < this.results.length; i++) {
-			var item = this.results[i];
-
-			for (var j = 0; j < this.storeFilterItems.length; j++) {
-				var store = this.storeFilterItems[j];
-
-				for (var k = 0; k < this.keywordFilterItems.length; k++) {
-					var keyword = this.keywordFilterItems[k];
-
-					if (keyword === item.keyword && store === item.store) {
-						if(item.active) {
-							updatedResults.push(item);
-							this.total += item.price * item.qty;
-						} else {
-							updatedResultsInactive.push(item);
-						}
-						
-					}
-				}
-			}
-		}
-		this.filteredResultsInactive = updatedResultsInactive;
-		this.filteredResults = updatedResults;
+		this.filteredResults = _.intersection(updatedStoreList, updatedKeywordLists);
 	}
 
 	addAllStoresToFilter() {
+		console.log('addAllStoresToFilter called');
 		this.storeFilterItems = this.stores.slice();
 		this.updateFilteredResults();
+		this.resultsTotal = this.getTotal(this.filteredResults);
 	}
 
 	removeAllStoresFromFilter() {
+		console.log('removeAllStoresFromFilter called');
+		// everything can be set to empty
 		this.storeFilterItems = [];
 		this.filteredResults = [];
-		this.total = 0;
+		this.resultsTotal = 0;
 	}
 
 	addAllKeywordsToFilter() {
+		console.log('addAllKeywordsToFilter called');
 		this.keywordFilterItems = this.keywords.slice();
 		this.updateFilteredResults();
+		this.resultsTotal = this.getTotal(this.filteredResults);
 	}
 
 	removeAllKeywordsFromFilter() {
+		console.log('removeAllKeywordsFromFilter called');
+		// everything can be set to empty
 		this.keywordFilterItems = [];
 		this.filteredResults = [];
-		this.total = 0;
+		this.resultsTotal = 0;
 	}
 
-	incTotal(item) {
-		this.total += item.price;
+	incTotal(item, total) {
+		console.log('incTotal called');
+		total += item.price;
+		return total;
 	}
 
-	decTotal(item) {
-		this.total -= item.price;
+	decTotal(item, total) {
+		console.log('decTotal called');
+		total -= item.price;
+		return total;
 	}
 
-	showActiveItems(aBool) { 
-		if(aBool) {
-			// show active
-			this.showActive = true;
-		} else {
-			// show inactive
-			this.showActive = false;
-		}
+	sortBy(list, property: string) {
+		console.log('sortBy called');
+		list = _.sortBy(list, property);
+		return list;
 	}
 
-	sortBy(property: string) {
-		this.filteredResults = _.sortBy(this.filteredResults, property);
+	sortByDec(list, property: string) {
+		console.log('sortByDec called');
+		list = _.sortBy(list, property).reverse();
+		return list;
 	}
 
-	sortByDec(property: string) {
-		this.filteredResults = _.sortBy(this.filteredResults, property).reverse();
+	addItemToShoppingList(item) {
+		this.filteredResults = _.without(this.filteredResults, item);
+		this.shoppinglist.push(item);
+		this.shoppinglistTotal = this.getTotal(this.shoppinglist);
+	}
+
+	removeItemFromShoppingList(item) {
+		this.shoppinglist = _.without(this.shoppinglist, item);
+		this.filteredResults.push(item);
+		this.shoppinglistTotal = this.getTotal(this.shoppinglist);
+	}
+
+	getTotal(list) {
+		var grandTotal = 0;
+		_.each(list, function(value:any, key:any, obj:any) {
+			var total = value.price * value.qty;
+			grandTotal += total;
+		});
+		return grandTotal;
 	}
 }

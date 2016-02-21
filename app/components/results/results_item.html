@@ -1,16 +1,16 @@
 <p class="lead">
-	<span class="label label-info">{{result.store}}</span> {{result.name}}
-	<span class="pull-right">{{result.price * result.qty | currency: "EUR":true:"1.2-2"}}</span>
+	<span class="label label-info">{{item.store}}</span> {{item.name}}
+	<span class="pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</span>
 </p>
 <div class="row">
 	<div class="col-md-2">
     	<div class="thumbnail">
-      		<img [src]="getImageURL(result)" width=128 height=128 alt="result.name"/>
+      		<img [src]="getImageURL(item)" width=128 height=128 alt="item.name"/>
     	</div>		
 	</div>
 	<div class="col-md-4">
-		<div class="label label-success">{{result.keyword}}</div>
-		<div class="label label-primary">{{result.category}}</div>
+		<div class="label label-success">{{item.keyword}}</div>
+		<div class="label label-primary">{{item.category}}</div>
 	</div>
 	<div class="col-md-4">
 		<div class="table-responsive">
@@ -24,29 +24,25 @@
 		    	<tr>
 		    		<td>
 		    			<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
-		    			  	<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal, true)">
+		    			  	<button type="button" class="btn btn-info" (click)="quantityChange(item, grandTotal, true)">
 		    					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 		    				</button>
-		    				<button type="button" class="btn btn-info" (click)="quantityChange(result, grandTotal)">
+		    				<button type="button" class="btn btn-info" (click)="quantityChange(item, grandTotal)">
 		    			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 		    			  	</button>
 		    			</div>
-		    			<span class="badge">{{result.qty}}</span>
+		    			<span class="badge">{{item.qty}}</span>
 		    		</td>
-		    		<td>{{result.price | currency: "EUR":true:"1.2-2"}}</td>
-		    		<td>{{result.price_desc}}</td>
+		    		<td>{{item.price | currency: "EUR":true:"1.2-2"}}</td>
+		    		<td>{{item.price_desc}}</td>
 		    	</tr>
 		    </tbody>
 		  </table>
 		</div>
 	</div>
 	<div class="col-md-2">
-		<button type="button" class="btn btn-success btn-xs pull-right" (click)="toggleActiveItem(result)" *ngIf="!active">
-			<span class="glyphicon glyphicon-share-alt icon-flipped" aria-hidden="true"></span> Restore
-		</button>
-
-		<button type="button" class="btn btn-danger btn-xs pull-right" (click)="toggleActiveItem(result)" *ngIf="active"> 
-			<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		<button type="button" class="btn btn-success btn-xs pull-right" (click)="addItem(item)"> 
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
 		</button>
 	</div>
 </div>
