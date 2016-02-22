@@ -54,7 +54,9 @@ export class ResultsCmp {
 	// qunatities 
 	shoppinglistTotal: number = 0;
 
-	constructor(private ResultsService: ResultsService, private Router: Router, private RouteParams: RouteParams ) {
+	constructor(private ResultsService: ResultsService, 
+			private Router: Router, 
+			private RouteParams: RouteParams ) {
 		let searchTerms = this.RouteParams.get('searchTerms');
 		this.ResultsService.getResults(searchTerms).subscribe(
 			stuff => {
@@ -204,5 +206,9 @@ export class ResultsCmp {
 			grandTotal += total;
 		});
 		return grandTotal;
+	}
+
+	getSearchTerms() {
+		return this.RouteParams.get('searchTerms');
 	}
 }

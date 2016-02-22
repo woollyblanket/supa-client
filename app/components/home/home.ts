@@ -4,12 +4,14 @@ import {ResultsService} from '../../services/results';
 import {Observable} from 'rxjs/Observable';
 import {Control} from 'angular2/common';
 import {Router, RouteParams} from 'angular2/router';
+import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
   selector: 'home',
   templateUrl: './components/home/home.html',
   styleUrls: ['./components/home/home.css'],
-  providers: [ResultsService]
+  providers: [ResultsService],
+  directives: [DROPDOWN_DIRECTIVES]
 })
 
 export class HomeCmp {
@@ -19,6 +21,8 @@ export class HomeCmp {
 
 	items: Observable<Array<string>>;
 	term = new Control();
+
+	selected: string = '';
 
 	constructor(private ResultsService: ResultsService, 
 				private Router: Router,
@@ -45,11 +49,17 @@ export class HomeCmp {
 	}
 
 	addShoppingListItem(name: string) {
+		// don't allow empty strings
+
+		if (name === '') {
+			return;
+		}
+
 		this.aShoppingListItem = {
-		'name' : name
-	};
-	this.itemList.push(this.aShoppingListItem);
-	this.listItem = '';
+			'name' : name
+		};
+		this.itemList.push(this.aShoppingListItem);
+		this.listItem = '';
 	}
 
 	removeShoppingListItem(item: ShoppingListItem) {

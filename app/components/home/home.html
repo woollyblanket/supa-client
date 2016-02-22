@@ -1,18 +1,18 @@
 <h1>Shopping List</h1>
-
-{{itemList | json}}
-
+<!-- {{itemList|json}} -->
 <button (click)="onSearch(itemList)">Search</button>
-<hr>
 
-<div>
-    <input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem)"/>
-    <button (click)="addShoppingListItem(listItem)">Add Item</button>
-    <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
-		{{item.name}}
-		<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
-	</div>
-    <ul>
-        <li (click)="addShoppingListItem(item)" *ngFor="#item of items | async">{{item}}</li>
-    </ul>
+<div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
+	{{item.name}}
+	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
 </div>
+<hr>
+<div class="btn-group" dropdown [isOpen]="listItem.length > 0" keyboardNav="true">
+	<input #input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()"/>
+	<button (click)="addShoppingListItem(listItem);input.focus()">Add Item</button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+      	<li role="menuitem" *ngFor="#item of items | async">
+      		<a (click)="addShoppingListItem(item);input.focus()" class="dropdown-item" href="#">{{item}}</a>
+      	</li>
+    </ul>
+</div> 
