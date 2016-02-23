@@ -7,6 +7,7 @@
 	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
 </div>
 <hr>
+<form>
 <div class="btn-group" dropdown [isOpen]="listItem.length > 0" keyboardNav="true">
 	<input #input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()"/>
 	<button (click)="addShoppingListItem(listItem);input.focus()">Add Item</button>
@@ -16,3 +17,4 @@
       	</li>
     </ul>
 </div> 
+</form>

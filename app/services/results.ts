@@ -17,15 +17,28 @@ export class ResultsService {
 			.map(res => res.json());
 	}
 
-	search(terms: Observable<string>, debounceDuration = 400) {
+	autocomplete(terms: Observable<string>, debounceDuration = 400) {
 		return terms.debounceTime(debounceDuration)
 			.distinctUntilChanged()
-			.switchMap(term => _.size(term) > 0 ? this.rawSearch(term) : Observable.of([]));
+			.switchMap(term => {
+				var temp;
+				var trimmed = term.toString().trim();
+				console.log('length', trimmed.length);
+				
+				if (_.size(trimmed) > 0) {
+					console.log('size > 0', trimmed);
+					temp = this.rawSearch(trimmed);
+				} else {
+					console.log('size !> 0', trimmed);
+					temp = Observable.of([]);
+				}
+				return temp;
+			});
 	}
 
 	rawSearch(term) {
 		return this.http
 			.get('http://tranquil-tundra-3993.herokuapp.com/autocomplete/' + term)
-			.map((request) => request.json());
+			.map((res) => res.json());
 	}
 }

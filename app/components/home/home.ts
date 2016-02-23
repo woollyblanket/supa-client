@@ -2,7 +2,7 @@ import {Component} from 'angular2/core';
 import {ShoppingListItem} from './shoppinglistitem.ts';
 import {ResultsService} from '../../services/results';
 import {Observable} from 'rxjs/Observable';
-import {Control} from 'angular2/common';
+import {Control, FORM_DIRECTIVES} from 'angular2/common';
 import {Router, RouteParams} from 'angular2/router';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
@@ -11,26 +11,25 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
   templateUrl: './components/home/home.html',
   styleUrls: ['./components/home/home.css'],
   providers: [ResultsService],
-  directives: [DROPDOWN_DIRECTIVES]
+  directives: [DROPDOWN_DIRECTIVES, FORM_DIRECTIVES]
 })
 
 export class HomeCmp {
 	itemList: Array<ShoppingListItem>;
 	aShoppingListItem: ShoppingListItem;
+
 	listItem: string = '';
 
 	items: Observable<Array<string>>;
 	term = new Control();
-
-	selected: string = '';
 
 	constructor(private ResultsService: ResultsService, 
 				private Router: Router,
 				routeParams: RouteParams) {
 		
 		this.itemList = [];
-		this.items = ResultsService.search(this.term.valueChanges);
-		// this.aShoppingListItem = {};
+		this.items = ResultsService.autocomplete(this.term.valueChanges);
+		console.log('this.term.valueChanges',this.term.valueChanges);
 	}
 
 	onSearch(terms) {
