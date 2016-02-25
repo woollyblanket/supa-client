@@ -5,14 +5,14 @@
 <div class="row">
 	<div class="col-md-2">
     	<div class="thumbnail">
-      		<img [src]="rs.getImageURL(item)" width=128 height=128 alt="item.n"/>
+      		<img [src]="rs.getImageURL(item)" width=128 height=128 alt="{{item.n}}" onerror="this.onerror=null;this.src='./assets/img/image.png';"/>
     	</div>		
 	</div>
 	<div class="col-md-3">
 		<div class="label label-success">{{item.q}}</div>
 		<div *ngFor="#category of item.categories">
 			<div class="label label-primary" >
-			<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
+				<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
 			</div>
 		</div>
 	</div>
@@ -22,7 +22,6 @@
 		    <thead>
 		    	<th>Quantity</th>
 		    	<th>Price</th>
-		    	<th>Price Description</th>
 		    </thead>
 		    <tbody>
 		    	<tr>
@@ -37,11 +36,13 @@
 		    			</div>
 		    			<span class="badge">{{item.qty}}</span>
 		    		</td>
-		    		<td>{{item.p | currency: "EUR":true:"1.2-2"}}</td>
-		    		<td>{{item.pd}}</td>
+		    		<td>{{item.p | currency: "EUR":true:"1.2-2"}} {{item.m}}</td>
 		    	</tr>
 		    </tbody>
 		  </table>
+		  <div class="label label-danger" >{{item.pr}}</div>
+		  <div class="label label-warning" *ngIf="item.l">Valid Until: {{item.l}}</div>
+		  <div class="label label-primary">{{item.pd}}</div>
 		</div>
 	</div>
 	<div class="col-md-2">

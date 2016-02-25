@@ -1,6 +1,7 @@
 import {Component} from 'angular2/core';
 import {ResultsService} from '../../services/results';
 import {StorePipe} from './store_pipe';
+import {SearchPipe} from './search_pipe';
 import {ResultItem} from './results_item';
 import {ShoppingListItem} from './shoppinglist_item';
 import {NgClass} from 'angular2/common';
@@ -10,7 +11,7 @@ import {RouteParams, Router} from 'angular2/router';
 import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
 
 @Component({
-	pipes: [StorePipe, PaginatePipe],
+	pipes: [StorePipe, SearchPipe, PaginatePipe],
 	templateUrl: './components/results/results.html',
 	styleUrls: ['./components/results/results.css'],
 	providers: [ResultsService, PaginationService],
@@ -58,6 +59,10 @@ export class ResultsCmp {
 	shoppinglistTotal: number = 0;
 
 	rs: ResultsService;
+
+	resultsPerPage:number = 10;
+	
+	textFilter: string = '';
 
 	constructor(private ResultsService: ResultsService, 
 			private Router: Router, 

@@ -12,6 +12,15 @@
 					<p>Total: {{resultsTotal | currency: "EUR":true:"1.2-2"}}</p>
 					<p>{{filteredResults?.length}} items</p>
 					<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
+					<select class="form-control" [(ngModel)]="resultsPerPage">
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+						<option value="{{filteredResults?.length}}">Show all</option>
+					</select>
+					<input [(ngModel)]="textFilter" value="" />
 				</div>
 				<div class="col-md-6">
 					<div class="btn-group pull-right" dropdown>
@@ -73,7 +82,7 @@
 			    </div>
 			</div>
 			<ul class="list-group" ><!-- *ngIf="showActive"> -->
-			    <li class="list-group-item" *ngFor="#result of filteredResults | paginate: { id: 'results', itemsPerPage: 10, currentPage: p}" >
+			    <li class="list-group-item" *ngFor="#result of filteredResults | search: textFilter | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" >
 			    	<result-item [item]="result" (qtyInc)="resultsTotal = incTotal(result, resultsTotal)" (qtyDec)="resultsTotal = decTotal(result, resultsTotal)" (itemAddedToShoppingList)="addItemToShoppingList(result)"></result-item>
 			    </li>
 			</ul>
