@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
+import {ResultsService} from '../../services/results';
 
 @Component({
 	selector: 'result-item',
@@ -10,12 +11,11 @@ export class ResultItem {
 	@Output() qtyInc: EventEmitter<any> = new EventEmitter();
 	@Output() qtyDec: EventEmitter<any> = new EventEmitter();
 	@Output() itemAddedToShoppingList: EventEmitter<any> = new EventEmitter();
-	
-	getImageURL(item) {
-		if (item.image === null) {
-			item.image = './assets/img/image.png';
-		}
-		return item.image;
+
+	rs: ResultsService;
+
+	constructor(private ResultsService: ResultsService) {
+		this.rs = ResultsService;
 	}
 
 	quantityChange(item, total, minus?: boolean) {

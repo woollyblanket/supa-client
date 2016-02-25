@@ -1,15 +1,15 @@
 <p class="lead">
-	<span class="label label-info">{{item.store}}</span> {{item.name}}
-	<span class="pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</span>
+	<span class="label label-info">{{rs.getStoreNameByItem(item)}}</span> {{item.n}}
+	<span class="pull-right">{{item.p * item.qty | currency: "EUR":true:"1.2-2"}}</span>
 </p>
 <div class="row">
 	<div class="col-md-2">
     	<div class="thumbnail">
-      		<img [src]="getImageURL(item)" width=128 height=128 alt="item.name"/>
+      		<img [src]="rs.getImageURL(item)" width=128 height=128 alt="item.n"/>
     	</div>		
 	</div>
 	<div class="col-md-3">
-		<div class="label label-success">{{item.keyword}}</div>
+		<div class="label label-success">{{item.q}}</div>
 		<div *ngFor="#category of item.categories">
 			<div class="label label-primary" >
 			<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
@@ -37,8 +37,8 @@
 		    			</div>
 		    			<span class="badge">{{item.qty}}</span>
 		    		</td>
-		    		<td>{{item.price | currency: "EUR":true:"1.2-2"}}</td>
-		    		<td>{{item.price_desc}}</td>
+		    		<td>{{item.p | currency: "EUR":true:"1.2-2"}}</td>
+		    		<td>{{item.pd}}</td>
 		    	</tr>
 		    </tbody>
 		  </table>

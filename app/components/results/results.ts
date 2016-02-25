@@ -7,14 +7,15 @@ import {NgClass} from 'angular2/common';
 import * as _ from 'underscore'; 
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 import {RouteParams, Router} from 'angular2/router';
+import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
 
 @Component({
-	pipes: [StorePipe],
+	pipes: [StorePipe, PaginatePipe],
 	templateUrl: './components/results/results.html',
 	styleUrls: ['./components/results/results.css'],
-	providers: [ResultsService],
-	directives: [ResultItem, ShoppingListItem, NgClass, DROPDOWN_DIRECTIVES]
-})
+	providers: [ResultsService, PaginationService],
+	directives: [ResultItem, ShoppingListItem, NgClass, DROPDOWN_DIRECTIVES, PAGINATION_DIRECTIVES]
+}) 
 
 /* 
 TO DO:
@@ -24,6 +25,8 @@ TO DO:
 */
 
 export class ResultsCmp { 
+	// @Input('data') filteredResults: any[] = [];
+
 	// unmodified results recieved from the API
 	results: any;
 	// results after this user has filtered them
@@ -54,9 +57,14 @@ export class ResultsCmp {
 	// qunatities 
 	shoppinglistTotal: number = 0;
 
+	rs: ResultsService;
+
 	constructor(private ResultsService: ResultsService, 
 			private Router: Router, 
 			private RouteParams: RouteParams ) {
+
+		this.rs = ResultsService;
+
 		let searchTerms = this.RouteParams.get('searchTerms');
 		this.ResultsService.getResults(searchTerms).subscribe(
 			stuff => {
@@ -75,13 +83,13 @@ export class ResultsCmp {
 
 					_.each(this.results, function(value :any, key:any, obj:any) { 
 						value = _.extend(value, extraProperties);
-						aTotal += value.price; 
-						value.categories = value.category.split('|');
+						aTotal += value.p; 
+						value.categories = value.c.split('|');
 					});
 
 					// get the stores and keywords from the results
-					this.stores = _.uniq(_.pluck(this.results, 'store'));
-					this.keywords = _.uniq(_.pluck(this.results, 'keyword')); 
+					this.stores = _.uniq(_.pluck(this.results, 's'));
+					this.keywords = _.uniq(_.pluck(this.results, 'q')); 
 
 					// set the filters
 					this.storeFilterItems = this.stores.slice();
@@ -127,8 +135,8 @@ export class ResultsCmp {
 	}
 
 	updateFilteredResults() {
-		var updatedStoreList = this.updateListByFilter(this.results, this.storeFilterItems, 'store');
-		var updatedKeywordLists = this.updateListByFilter(this.results, this.keywordFilterItems, 'keyword');
+		var updatedStoreList = this.updateListByFilter(this.results, this.storeFilterItems, 's');
+		var updatedKeywordLists = this.updateListByFilter(this.results, this.keywordFilterItems, 'q');
 
 		this.filteredResults = _.intersection(updatedStoreList, updatedKeywordLists);
 	}
@@ -165,13 +173,13 @@ export class ResultsCmp {
 
 	incTotal(item, total) {
 		console.log('incTotal called');
-		total += item.price;
+		total += item.p;
 		return total;
 	}
 
 	decTotal(item, total) {
 		console.log('decTotal called');
-		total -= item.price;
+		total -= item.p;
 		return total;
 	}
 
@@ -202,7 +210,7 @@ export class ResultsCmp {
 	getTotal(list) {
 		var grandTotal = 0;
 		_.each(list, function(value:any, key:any, obj:any) {
-			var total = value.price * value.qty;
+			var total = value.p * value.qty;
 			grandTotal += total;
 		});
 		return grandTotal;

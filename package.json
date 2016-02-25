@@ -100,6 +100,7 @@
     "moment": "^2.11.2",
     "ng2-bootstrap": "^1.0.3",
     "ng2-material": "^0.1.8",
+    "ng2-pagination": "0.0.1-beta.1",
     "protractor": "^3.1.1",
     "reflect-metadata": "0.1.2",
     "rimraf": "^2.5.2",

@@ -21,9 +21,9 @@ import {NameList} from '../../services/name_list';
   providers: [HTTP_PROVIDERS]
 })
 @RouteConfig([
-  { path: '/', component: HomeCmp, as: 'Home' },
-  { path: '/about', component: AboutCmp, as: 'About' },
-  // { path: '/results', component: ResultsCmp, as: 'Results' }
-  { path: 'results/:searchTerms', component: ResultsCmp, as: 'Results' }
+    { path: '/', component: HomeCmp, as: 'Home', useAsDefault: true },
+    { path: '/about', component: AboutCmp, as: 'About' },
+  	{ path: 'results/:searchTerms', component: ResultsCmp, as: 'Results' },
+  	{ path: '/**', redirectTo: ['Home'] }
 ])
 export class AppCmp {}

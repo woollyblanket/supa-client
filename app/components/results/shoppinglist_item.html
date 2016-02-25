@@ -1,16 +1,16 @@
 <div class="row">
 	<div class="col-md-4">
     	<div class="thumbnail">
-      		<img [src]="getImageURL(item)" width=128 height=128 alt="item.name"/>
+      		<img [src]="rs.getImageURL(item)" width=128 height=128 alt="item.n"/>
     	</div>		
 	</div>
 	<div class="col-md-8">
 		<div class="row">
 			<div class="col-md-9">
-				<p><span class="label label-info">{{item.store}}</span> {{item.name}}</p>
+				<p><span class="label label-info">{{rs.getStoreNameByItem(item)}}</span> {{item.n}}</p>
 			</div>
 			<div class="col-md-3">
-				<span class="pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</span>
+				<span class="pull-right">{{item.p * item.qty | currency: "EUR":true:"1.2-2"}}</span>
 			</div>
 		</div>
 		<div class="row">
@@ -25,7 +25,7 @@
 				</div>
 				<span class="badge">{{item.qty}}</span>
 				
-				<p>{{item.price | currency: "EUR":true:"1.2-2"}}</p>
+				<p>{{item.p | currency: "EUR":true:"1.2-2"}}</p>
 			</div>
 			<div class="col-md-4">
 				<button type="button" class="btn btn-danger btn-xs pull-right" (click)="removeItem(item)"> 

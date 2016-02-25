@@ -29,12 +29,13 @@ export class HomeCmp {
 		
 		this.itemList = [];
 		this.items = ResultsService.autocomplete(this.term.valueChanges);
-		console.log('this.term.valueChanges',this.term.valueChanges);
 	}
 
 	onSearch(terms) {
 		// terms is currently in the format [{'name':'a name'},{'name':'another name'}]
 		// flatten the array and stringify it separated by '|'
+
+		if (terms.length === 0) { return; }
 
 		var tempArray: Array<string> = [];
 		var tempDeliminatedList: string = '';
@@ -49,6 +50,8 @@ export class HomeCmp {
 
 	addShoppingListItem(name: string) {
 		// don't allow empty strings
+
+		name = name.trim();
 
 		if (name === '') {
 			return;

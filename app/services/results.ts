@@ -5,6 +5,23 @@ import * as _ from 'underscore';
 
 @Injectable()
 export class ResultsService {
+	storeLookup = [
+		{
+			'name': 'Tesco',
+			'key': 't',
+			'imageURL': 'http://img.tesco.com/Groceries/pi/'
+		},
+		{
+			'name': 'Aldi',
+			'key': 'a',
+			'imageURL': 'http://www.aldi.ie/typo3temp/pics/'
+		},
+		{
+			'name': 'SuperValu',
+			'key': 's',
+			'imageURL': 'http://shop.supervalu.ie/shopping/images/products/medium/'
+		}
+	];
 
 	constructor(private http: Http) { 
 	}
@@ -17,19 +34,35 @@ export class ResultsService {
 			.map(res => res.json());
 	}
 
+	getImageURL(item) {
+		if (item.im === null || !item.im) {
+			return './assets/img/image.png';
+		} else {
+			var storeURL = _.findWhere(this.storeLookup, { key: item.s }).imageURL;
+			var replaced = item.im.replace('_3', '_2');
+
+			return storeURL + replaced;
+		}
+	}
+
+	getStoreNameByItem(item) {
+		return _.findWhere(this.storeLookup, { key: item.s }).name;
+	}
+
+	getStoreNameByKey(key) {
+		return _.findWhere(this.storeLookup, { key: key }).name;
+	}
+
 	autocomplete(terms: Observable<string>, debounceDuration = 400) {
 		return terms.debounceTime(debounceDuration)
 			.distinctUntilChanged()
 			.switchMap(term => {
 				var temp;
 				var trimmed = term.toString().trim();
-				console.log('length', trimmed.length);
-				
+
 				if (_.size(trimmed) > 0) {
-					console.log('size > 0', trimmed);
 					temp = this.rawSearch(trimmed);
 				} else {
-					console.log('size !> 0', trimmed);
 					temp = Observable.of([]);
 				}
 				return temp;
