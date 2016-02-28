@@ -8,7 +8,7 @@ import 'rxjs/Rx';
 
 import {HomeCmp} from '../home/home';
 import {AboutCmp} from '../about/about';
-import {ResultsCmp} from '../results/results';
+import {ResultsComponent} from '../results/results.component';
 import {NameList} from '../../services/name_list';
 
 @Component({
@@ -23,7 +23,7 @@ import {NameList} from '../../services/name_list';
 @RouteConfig([
     { path: '/', component: HomeCmp, as: 'Home', useAsDefault: true },
     { path: '/about', component: AboutCmp, as: 'About' },
-  	{ path: 'results/:searchTerms', component: ResultsCmp, as: 'Results' },
+	{ path: 'results/:searchTerms', component: ResultsComponent, as: 'Results' },
   	{ path: '/**', redirectTo: ['Home'] }
 ])
 export class AppCmp {}

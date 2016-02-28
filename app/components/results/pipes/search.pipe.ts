@@ -9,7 +9,7 @@ export class SearchPipe {
 		// return value.filter((item)=>item.n.startsWith(term));
 		return value.filter(item => {
 
-			if (item.n.toLowerCase().indexOf(term) !== -1) {
+			if (item.name.toLowerCase().indexOf(term) !== -1) {
 				return item;
 			}
 		});

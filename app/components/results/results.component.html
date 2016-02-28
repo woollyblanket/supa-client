@@ -20,7 +20,7 @@
 						<option value="100">100</option>
 						<option value="{{filteredResults?.length}}">Show all</option>
 					</select>
-					<input [(ngModel)]="textFilter" value="" />
+					<input [(ngModel)]="textFilter"/>
 				</div>
 				<div class="col-md-6">
 					<div class="btn-group pull-right" dropdown>
@@ -51,39 +51,22 @@
 			    <div class="row">
 			    	<div class="col-md-6">
 			    		<p>Store Filter</p>
-			    		<!-- {{storeFilterItems | json}} -->
-			    		<div class="btn-group">
-			    			<button *ngFor="#store of stores" class="btn btn-default btn-sm" (click)="toggleFilter(store, storeFilterItems)" [ngClass]="{'active': storeFilterItems.indexOf(store) !== -1}" aria-pressed="true">{{rs.getStoreNameByKey(store)}}</button>
+			    		<div class="btn-group" *ngFor="#filterCriterion of filterCriteria">
+			    			<product-list-property-filter [unfilteredList]="resultsList" [(filteredList)]="filteredResultsList" [criterion]="filterCriterion"></product-list-property-filter>
 			    		</div>
-			    		<div class="btn-group">
-				    		<button class="btn btn-danger btn-sm" (click)="removeAllStoresFromFilter()">
-				    			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> All
-				    		</button>
-				    		<button class="btn btn-success btn-sm" (click)="addAllStoresToFilter()">
-				    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All
-				    		</button>
-				    	</div>
 			    	</div>
 			    	<div class="col-md-6">
-			    		<p>Keyword Filter</p>
-			    		<!-- {{keywordFilterItems | json}} -->
-			    		<div class="btn-group">
-			    			<button *ngFor="#keyword of keywords" class="btn btn-default btn-sm" (click)="toggleFilter(keyword, keywordFilterItems)" [ngClass]="{'active': keywordFilterItems.indexOf(keyword) !== -1}" aria-pressed="true">{{keyword}}</button>
+			    		<p>Query Filter</p>
+			    		<div class="btn-group" *ngFor="#query of resultsListQueries">
+			    			<product-list-property-filter [(list)]="filteredResultsList" [needle]="query" [haystack]="'query'"></product-list-property-filter>
 			    		</div>
-			    		<div class="btn-group">
-				    		<button class="btn btn-danger btn-sm" (click)="removeAllKeywordsFromFilter()">
-				    			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> All
-				    		</button>
-				    		<button class="btn btn-success btn-sm" (click)="addAllKeywordsToFilter()">
-				    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All
-				    		</button>
-				    	</div>
 			    	</div>
 			    </div>
 			</div>
-			<ul class="list-group" ><!-- *ngIf="showActive"> -->
-			    <li class="list-group-item" *ngFor="#result of filteredResults | search: textFilter | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" >
-			    	<result-item [item]="result" (qtyInc)="resultsTotal = incTotal(result, resultsTotal)" (qtyDec)="resultsTotal = decTotal(result, resultsTotal)" (itemAddedToShoppingList)="addItemToShoppingList(result)"></result-item>
+			<ul class="list-group" >
+			    <!-- <li class="list-group-item" *ngFor="#result of resultsList?.items | search: textFilter | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" > -->
+			    <li class="list-group-item" *ngFor="#result of filteredResultsList?.items" >
+			    	<results-list-item [item]="result"></results-list-item>
 			    </li>
 			</ul>
 		</div>
@@ -122,12 +105,11 @@
 				</div>
 			</div>
 		
-			<ul class="list-group" > <!-- *ngIf="!showActive"> -->
-			    <li class="list-group-item" *ngFor="#item of shoppinglist" >
-			    	<shoppinglist-item [item]="item" (qtyInc)="shoppinglistTotal = incTotal(item, shoppinglistTotal)" (qtyDec)="shoppinglistTotal = decTotal(item, shoppinglistTotal)" (itemRemovedFromeShoppingList)="removeItemFromShoppingList(item)">Loading...</shoppinglist-item>
+			<ul class="list-group" > 
+			    <li class="list-group-item" *ngFor="#item of shoppingList?.items" >
+			    	<shopping-list-item [item]="item"></shopping-list-item>
 			    </li>
 			</ul>
 		</div>
 	</div>
 </div>
-		

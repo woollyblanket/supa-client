@@ -1,0 +1,12 @@
+<!-- <div class="btn-group"> -->
+	<!-- <button *ngFor="#store of stores" class="btn btn-default btn-sm" (click)="toggleFilter(store, storeFilterItems)" [ngClass]="{'active': storeFilterItems.indexOf(store) !== -1}" aria-pressed="true">{{rs.getStoreNameByKey(store)}}</button> -->
+	<button class="btn btn-default btn-sm" (click)="filter()">{{criterion.value}}</button>
+<!-- </div> -->
+<!-- <div class="btn-group">
+	<button class="btn btn-danger btn-sm" (click)="removeAllStoresFromFilter()">
+		<span class="glyphicon glyphicon-minus" aria-hidden="true"></span> All
+	</button>
+	<button class="btn btn-success btn-sm" (click)="addAllStoresToFilter()">
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> All
+	</button>
+</div> -->

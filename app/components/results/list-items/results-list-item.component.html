@@ -1,15 +1,15 @@
 <p class="lead">
-	<span class="label label-info">{{rs.getStoreNameByItem(item)}}</span> {{item.n}}
-	<span class="pull-right">{{item.p * item.qty | currency: "EUR":true:"1.2-2"}}</span>
+	<span class="label label-info">{{item.store}}</span> {{item.name}}
+	<span class="pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</span>
 </p>
 <div class="row">
 	<div class="col-md-2">
     	<div class="thumbnail">
-      		<img [src]="rs.getImageURL(item)" width=128 height=128 alt="{{item.n}}" onerror="this.onerror=null;this.src='./assets/img/image.png';"/>
+      		<img [src]="item.image" width=128 height=128 alt="{{item.name}}" onerror="this.onerror=null;this.src='./assets/img/image.png';"/>
     	</div>		
 	</div>
 	<div class="col-md-3">
-		<div class="label label-success">{{item.q}}</div>
+		<div class="label label-success">{{item.query}}</div>
 		<div *ngFor="#category of item.categories">
 			<div class="label label-primary" >
 				<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
@@ -27,26 +27,26 @@
 		    	<tr>
 		    		<td>
 		    			<div class="btn-group btn-group-xs" role="group" aria-label="Quantity">
-		    			  	<button type="button" class="btn btn-info" (click)="quantityChange(item, grandTotal, true)">
+		    			  	<button type="button" class="btn btn-info" (click)="item.minusQty()">
 		    					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
 		    				</button>
-		    				<button type="button" class="btn btn-info" (click)="quantityChange(item, grandTotal)">
+		    				<button type="button" class="btn btn-info" (click)="item.plusQty()">
 		    			  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 		    			  	</button>
 		    			</div>
 		    			<span class="badge">{{item.qty}}</span>
 		    		</td>
-		    		<td>{{item.p | currency: "EUR":true:"1.2-2"}} {{item.m}}</td>
+		    		<td>{{item.price | currency: "EUR":true:"1.2-2"}} {{item.measure}}</td>
 		    	</tr>
 		    </tbody>
 		  </table>
-		  <div class="label label-danger" >{{item.pr}}</div>
-		  <div class="label label-warning" *ngIf="item.l">Valid Until: {{item.l}}</div>
-		  <div class="label label-primary">{{item.pd}}</div>
+		  <div class="label label-danger" >{{item.promo}}</div>
+		  <div class="label label-warning" *ngIf="item.limited">Valid Until: {{item.limited}}</div>
+		  <div class="label label-primary">{{item.priceDesc}}</div>
 		</div>
 	</div>
 	<div class="col-md-2">
-		<button type="button" class="btn btn-success btn-xs pull-right" (click)="addItem(item)"> 
+		<button type="button" class="btn btn-success btn-xs pull-right" (click)="shoppingList.addItem(item);resultsList.removeItem(item)"> 
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
 		</button>
 	</div>
