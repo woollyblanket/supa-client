@@ -36,13 +36,17 @@ export class FilterCriterion {
 		return this._active;
 	}
 
+	set active(aBool) {
+		this._active = aBool;
+	}
+
 	public evaluate(item: ProductListItem): boolean {
 
 		if(!this._active) {
 			return false;
 		}
 
-		switch (this._operator) {
+		switch (this._operator) { 
 			case '===':
 				if (item[this._property] === this._value) {
 					return true;

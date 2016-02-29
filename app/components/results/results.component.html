@@ -49,22 +49,12 @@
 			</div>
 			<div class="panel-body">
 			    <div class="row">
-			    	<div class="col-md-6">
-			    		<p>Store Filter</p>
-			    		<div class="btn-group" *ngFor="#filterCriterion of filterCriteria">
-			    			<product-list-property-filter [unfilteredList]="resultsList" [(filteredList)]="filteredResultsList" [criterion]="filterCriterion"></product-list-property-filter>
-			    		</div>
-			    	</div>
-			    	<div class="col-md-6">
-			    		<p>Query Filter</p>
-			    		<div class="btn-group" *ngFor="#query of resultsListQueries">
-			    			<product-list-property-filter [(list)]="filteredResultsList" [needle]="query" [haystack]="'query'"></product-list-property-filter>
-			    		</div>
+			    	<div class="col-md-6" *ngFor="#criteria of filterCriteriaCollection">
+			    		<product-list-property-filter [criterion]="criterion" (clicked)="filterResults()" *ngFor="#criterion of criteria.items"></product-list-property-filter>
 			    	</div>
 			    </div>
 			</div>
 			<ul class="list-group" >
-			    <!-- <li class="list-group-item" *ngFor="#result of resultsList?.items | search: textFilter | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" > -->
 			    <li class="list-group-item" *ngFor="#result of filteredResultsList?.items" >
 			    	<results-list-item [item]="result"></results-list-item>
 			    </li>
