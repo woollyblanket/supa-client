@@ -20,7 +20,14 @@ export class ProductList {
 	}
 
 	count() : number {
-		return this._list.length;
+		// this just returns the how many plis are in the list
+		// but doesn't take into account the quantity of each pli
+		// return this._list.length;
+		let count = 0;
+		_.each(this._list, function(el){
+			count += el.qty;
+		});
+		return count;
 	}
 
 	get items(): Array<ProductListItem> {
@@ -40,7 +47,7 @@ export class ProductList {
 		
 	}
 
-	filter(fn: (pli: ProductListItem, index?: number, list? : ProductListItem[]) => boolean): ProductList {
+	filter(fn: (pli: ProductListItem) => boolean): ProductList {
 		return new ProductList(_.filter(this._list, fn));
 	}
 	/*
@@ -52,7 +59,7 @@ export class ProductList {
 	*/
 
 	// allowing a function to be called for every item on the list
-	visit(fn: (ProductListItem) => void): void {
+	visit(fn: (pli: ProductListItem) => void): void {
 		_.each(this._list, fn);
 	}
 

@@ -28,7 +28,7 @@
 				<p>{{item.price | currency: "EUR":true:"1.2-2"}}</p>
 			</div>
 			<div class="col-md-4">
-				<button type="button" class="btn btn-danger btn-xs pull-right" (click)="resultsList.addItem(item);shoppingList.removeItem(item)"> 
+				<button type="button" class="btn btn-danger btn-xs pull-right" (click)="removeFromShoppingList()"> 
 					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Remove
 				</button>
 			</div>

@@ -1,36 +1,48 @@
+// Angular stuff
 import {Component} from 'angular2/core';
+import {RouteParams, Router} from 'angular2/router';
+
+// Providers
 import {ResultsService} from '../../services/results';
-import {ResultListItemComponent} from './list-items/results-list-item.component';
-import {ShoppingListItemComponent} from './list-items/shopping-list-item.component';
 import {FilterCriterion} from './filters/filter-criterion.model';
 import {FilterCriteria} from './filters/filter-criteria.model';
-import {ProductListPropertyFilterComponent} from './filters/product-list-property-filter.component';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
-import {RouteParams, Router} from 'angular2/router';
-import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
 import {ProductList} from './lists/product-list.model'; 
-§
+
+// Directives
+import {ResultListItemComponent} from './list-items/results-list-item.component';
+import {ShoppingListItemComponent} from './list-items/shopping-list-item.component';
+import {ProductListPropertyFilterComponent} from './filters/product-list-property-filter.component';
+import {SortProductListComponent} from './lists/sort-product-list.component';
+
+// Pagination
+import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
+
 @Component({
 	pipes: [PaginatePipe],
 	templateUrl: './components/results/results.component.html',
 	styleUrls: ['./components/results/results.component.css'],
-	providers: [ResultsService, PaginationService, ProductList, FilterCriterion, FilterCriteria],
+	providers: [
+		ResultsService, 
+		PaginationService, 
+		ProductList, 
+		FilterCriterion, 
+		FilterCriteria],
 	directives: [
 		ResultListItemComponent, 
 		ShoppingListItemComponent,
 		ProductListPropertyFilterComponent,
-		DROPDOWN_DIRECTIVES, 
+		SortProductListComponent,
 		PAGINATION_DIRECTIVES]
 }) 
 
 export class ResultsComponent { 
-
+	shoppingList: ProductList = new ProductList([]);
 	resultsList: ProductList;
 	filteredResultsList: ProductList;
 
-	shoppingList: ProductList = new ProductList([]);
-
 	filterCriteriaCollection: FilterCriteria[] = [];
+
+	resultsPerPage: number = 10;
 
 	constructor(private rs: ResultsService,
 				private r: Router, 
@@ -63,7 +75,7 @@ export class ResultsComponent {
 		);
 	}
 
-	filterResults() {
+	filterResults(): void {
 		var localFcc = this.filterCriteriaCollection;
 
 		this.filteredResultsList = this.resultsList.filter(function(pli) {
@@ -75,6 +87,25 @@ export class ResultsComponent {
 
 			return criteriaMet;
 		});
+	}
+
+	addToShoppingList(item: any): void {
+		console.log(typeof item);
+		this.shoppingList.addItem(item);
+		this.filteredResultsList.removeItem(item);
+	}
+
+	removeFromShoppingList(item: any): void {
+		this.shoppingList.removeItem(item);
+		this.filteredResultsList.addItem(item);
+	}
+
+	sortListBy(criteria: {}, list: ProductList) {
+		list.sort(criteria['property'], criteria['inc']);
+	}
+
+	getSearchTerms(): string {
+		return this.rp.get('searchTerms');
 	}
 
 
@@ -138,7 +169,5 @@ export class ResultsComponent {
 	// 	return grandTotal;
 	// }
 
-	getSearchTerms() {
-		return this.rp.get('searchTerms');
-	}
+
 }

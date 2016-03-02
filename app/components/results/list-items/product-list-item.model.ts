@@ -1,5 +1,7 @@
 import * as _ from 'underscore';
+import {Injectable} from 'angular2/core';
 
+@Injectable()
 export class ProductListItem { 
 	private _qty: number;
 	private _price: number;

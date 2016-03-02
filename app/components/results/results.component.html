@@ -1,5 +1,6 @@
 <h1>Results</h1>
 <p>Search Terms: {{getSearchTerms()}}</p>
+<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
 <div class="row">
 	<div class="col-md-8">
 		<div class="panel panel-default">
@@ -9,57 +10,43 @@
 					<h3 class="panel-title">
 						Search Results
 					</h3>
-					<p>Total: {{resultsTotal | currency: "EUR":true:"1.2-2"}}</p>
-					<p>{{filteredResults?.length}} items</p>
-					<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
+					<p>{{filteredResultsList?.count()}} items</p>
+					
 					<select class="form-control" [(ngModel)]="resultsPerPage">
 						<option value="10">10</option>
 						<option value="25">25</option>
 						<option value="50">50</option>
 						<option value="75">75</option>
 						<option value="100">100</option>
-						<option value="{{filteredResults?.length}}">Show all</option>
+						<option value="{{filteredResultsList?.count()}}">Show all</option>
 					</select>
 					<input [(ngModel)]="textFilter"/>
 				</div>
 				<div class="col-md-6">
-					<div class="btn-group pull-right" dropdown>
-			    		<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
-			    		Sort <span class="caret"></span>
-			    		</button>
-			    		<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'p')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - Low to High</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'p')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - High to Low</a></li>
-			    			<li role="separator" class="divider"></li>
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'n')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - A to Z</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'n')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - Z to A</a></li>
-			    			<li role="separator" class="divider"></li>
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - Low to High</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - High to Low</a></li>
-			    			<li role="separator" class="divider"></li>
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 'q')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Keyword - A to Z</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults,'q')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Keyword - Z to A</a></li>
-			    			<li role="separator" class="divider"></li>
-			    			<li><a role="button" (click)="filteredResults = sortBy(filteredResults, 's')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - A to Z</a></li>
-			    			<li><a role="button" (click)="filteredResults = sortByDec(filteredResults,'s')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - Z to A</a></li>
-			    		</ul>
-			        </div>
+					<sort-product-list 
+						(sort)="sortListBy($event, filteredResultsList)">
+					</sort-product-list>
 				</div>
 			</div>
 			</div>
 			<div class="panel-body">
 			    <div class="row">
 			    	<div class="col-md-6" *ngFor="#criteria of filterCriteriaCollection">
-			    		<product-list-property-filter [criterion]="criterion" (clicked)="filterResults()" *ngFor="#criterion of criteria.items"></product-list-property-filter>
+			    		<product-list-property-filter 
+			    			[criterion]="criterion" 
+			    			(clicked)="filterResults()" 
+			    			*ngFor="#criterion of criteria.items">
+			    		</product-list-property-filter>
 			    	</div>
 			    </div>
 			</div>
 			<ul class="list-group" >
-			    <li class="list-group-item" *ngFor="#result of filteredResultsList?.items" >
-			    	<results-list-item [item]="result"></results-list-item>
+			    <li class="list-group-item" *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" >
+			    	<results-list-item [item]="result" (add)="addToShoppingList($event)"></results-list-item>
 			    </li>
 			</ul>
 		</div>
+		<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
 	</div>
 	<div class="col-md-4">
 		<div class="panel panel-default">
@@ -70,34 +57,19 @@
 							Shopping List
 						</h3>
 						<p>Total: {{shoppinglistTotal | currency: "EUR":true:"1.2-2"}}</p>
-						<p>{{shoppinglist?.length}} items</p>
+						<p>{{shoppingList?.count()}} items</p>
 					</div>
 					<div class="col-md-4">
-						<div class="btn-group pull-right" dropdown>
-				    		<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" dropdownToggle>
-				    		Sort <span class="caret"></span>
-				    		</button>
-				    		<ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'p')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - Low to High</a></li>
-				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'p')"><span class="glyphicon glyphicon-eur" aria-hidden="true"></span> Item Price - High to Low</a></li>
-				    			<li role="separator" class="divider"></li>
-				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'n')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - A to Z</a></li>
-				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'n')"><span class="glyphicon glyphicon-tag" aria-hidden="true"></span> Name - Z to A</a></li>
-				    			<li role="separator" class="divider"></li>
-				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - Low to High</a></li>
-				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist, 'qty')"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Quantity - High to Low</a></li>
-				    			<li role="separator" class="divider"></li>
-				    			<li><a role="button" (click)="shoppinglist = sortBy(shoppinglist, 's')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - A to Z</a></li>
-				    			<li><a role="button" (click)="shoppinglist = sortByDec(shoppinglist,'s')"><span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> Store - Z to A</a></li>
-				    		</ul>
-						</div>
+						<sort-product-list 
+							(sort)="sortListBy($event, shoppingList)">
+						</sort-product-list>
 					</div>
 				</div>
 			</div>
 		
 			<ul class="list-group" > 
 			    <li class="list-group-item" *ngFor="#item of shoppingList?.items" >
-			    	<shopping-list-item [item]="item"></shopping-list-item>
+			    	<shopping-list-item [item]="item" (remove)="removeFromShoppingList($event)"></shopping-list-item>
 			    </li>
 			</ul>
 		</div>
