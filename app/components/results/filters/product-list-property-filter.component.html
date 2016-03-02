@@ -1,0 +1,7 @@
+<button 
+	[class.btn-success]="criterion.active"
+	[class.btn-danger]="!criterion.active"
+	class="btn btn-default btn-sm" 
+	(click)="filter()">
+		{{criterion.value}}
+</button>

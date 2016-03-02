@@ -1,0 +1,7 @@
+.shoppingListItem{
+	margin: 5px;
+}
+
+.closeBtn{
+	cursor: pointer;
+}
