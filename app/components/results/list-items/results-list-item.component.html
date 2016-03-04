@@ -21,7 +21,8 @@
 		  <table class="table">
 		    <thead>
 		    	<th>Quantity</th>
-		    	<th>Price</th>
+		    	<th>Unit Price</th>
+		    	<th>Measure</th>
 		    </thead>
 		    <tbody>
 		    	<tr>
@@ -36,7 +37,8 @@
 		    			</div>
 		    			<span class="badge">{{item.qty}}</span>
 		    		</td>
-		    		<td>{{item.price | currency: "EUR":true:"1.2-2"}} {{item.measure}}</td>
+		    		<td>{{item.price | currency: "EUR":true:"1.2-2"}}</td>
+		    		<td>{{item.measure}}</td>
 		    	</tr>
 		    </tbody>
 		  </table>

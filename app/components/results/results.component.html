@@ -20,7 +20,7 @@
 						<option value="100">100</option>
 						<option value="{{filteredResultsList?.count()}}">Show all</option>
 					</select>
-					<input [(ngModel)]="textFilter"/>
+					<input class="form-control" [ngModel]="nameFilter" (ngModelChange)="nameFilterChange($event)"/>
 				</div>
 				<div class="col-md-6">
 					<sort-product-list 
@@ -31,11 +31,16 @@
 			</div>
 			<div class="panel-body">
 			    <div class="row">
-			    	<div class="col-md-6" *ngFor="#criteria of filterCriteriaCollection">
+			    	<div class="col-md-12">
 			    		<product-list-property-filter 
 			    			[criterion]="criterion" 
 			    			(clicked)="filterResults()" 
-			    			*ngFor="#criterion of criteria.items">
+			    			*ngFor="#criterion of filterCriteriaCollection.store?.items">
+			    		</product-list-property-filter>
+			    		<product-list-property-filter 
+			    			[criterion]="criterion" 
+			    			(clicked)="filterResults()" 
+			    			*ngFor="#criterion of filterCriteriaCollection.query?.items">
 			    		</product-list-property-filter>
 			    	</div>
 			    </div>

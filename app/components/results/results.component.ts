@@ -40,9 +40,11 @@ export class ResultsComponent {
 	resultsList: ProductList;
 	filteredResultsList: ProductList;
 
-	filterCriteriaCollection: FilterCriteria[] = [];
+	filterCriteriaCollection: Dictionary<FilterCriteria> = {};
 
 	resultsPerPage: number = 10;
+
+	nameFilter: string;
 
 	constructor(private rs: ResultsService,
 				private r: Router, 
@@ -55,20 +57,26 @@ export class ResultsComponent {
 				this.resultsList = new ProductList(response);
 				this.filteredResultsList = new ProductList(response);
 
-				let fcs: FilterCriteria = new FilterCriteria();
-				let fcq: FilterCriteria = new FilterCriteria();
-				let fcc = this.filterCriteriaCollection;
+				let fcStore: FilterCriteria = new FilterCriteria();
+				let fcQuery: FilterCriteria = new FilterCriteria();
+				let fcName: FilterCriteria = new FilterCriteria();
+				let fcCollection = this.filterCriteriaCollection;
 
-				_.each(this.resultsList.items, function(el, index, list){
+				let nameFC = new FilterCriterion('name', 'contains', this.nameFilter);
+
+				_.each(this.resultsList.items, function(el, index, list) {
 					let storeFC = new FilterCriterion('store', '===', el.store);
 					let queryFC = new FilterCriterion('query', '===', el.query);
-					
-					fcs.addCriterion(storeFC);
-					fcq.addCriterion(queryFC);
+
+					fcStore.addCriterion(storeFC);
+					fcQuery.addCriterion(queryFC);
 				});
 
-				fcc.push(fcs);
-				fcc.push(fcq);
+				fcName.addCriterion(nameFC);
+
+				fcCollection['store'] = fcStore;
+				fcCollection['query'] = fcQuery;
+				fcCollection['name'] = fcName;
 			},
 			err => console.error(err), 
 			() => console.log('done loading results')
@@ -89,8 +97,13 @@ export class ResultsComponent {
 		});
 	}
 
+	nameFilterChange(event):void {
+		this.nameFilter = event;
+		this.filterCriteriaCollection['name'].items[0].value = event;
+		this.filterResults();
+	}
+
 	addToShoppingList(item: any): void {
-		console.log(typeof item);
 		this.shoppingList.addItem(item);
 		this.filteredResultsList.removeItem(item);
 	}
@@ -100,74 +113,11 @@ export class ResultsComponent {
 		this.filteredResultsList.addItem(item);
 	}
 
-	sortListBy(criteria: {}, list: ProductList) {
+	sortListBy(criteria: {}, list: ProductList):void {
 		list.sort(criteria['property'], criteria['inc']);
 	}
 
 	getSearchTerms(): string {
 		return this.rp.get('searchTerms');
 	}
-
-
-	// addAllStoresToFilter() {
-	// 	console.log('addAllStoresToFilter called');
-	// 	this.storeFilterItems = this.stores.slice();
-	// 	this.updateFilteredResults();
-	// 	this.resultsTotal = this.getTotal(this.filteredResults);
-	// }
-
-	// removeAllStoresFromFilter() {
-	// 	console.log('removeAllStoresFromFilter called');
-	// 	// everything can be set to empty
-	// 	this.storeFilterItems = [];
-	// 	this.filteredResults = [];
-	// 	this.resultsTotal = 0;
-	// }
-
-	// incTotal(item, total) {
-	// 	console.log('incTotal called');
-	// 	total += item.p;
-	// 	return total;
-	// }
-
-	// decTotal(item, total) {
-	// 	console.log('decTotal called');
-	// 	total -= item.p;
-	// 	return total;
-	// }
-
-	// sortBy(list, property: string) {
-	// 	console.log('sortBy called');
-	// 	list = _.sortBy(list, property);
-	// 	return list;
-	// }
-
-	// sortByDec(list, property: string) {
-	// 	console.log('sortByDec called');
-	// 	list = _.sortBy(list, property).reverse();
-	// 	return list;
-	// }
-
-	// addItemToShoppingList(item) {
-	// 	this.filteredResults = _.without(this.filteredResults, item);
-	// 	this.shoppinglist.push(item);
-	// 	this.shoppinglistTotal = this.getTotal(this.shoppinglist);
-	// }
-
-	// removeItemFromShoppingList(item) {
-	// 	this.shoppinglist = _.without(this.shoppinglist, item);
-	// 	this.filteredResults.push(item);
-	// 	this.shoppinglistTotal = this.getTotal(this.shoppinglist);
-	// }
-
-	// getTotal(list) {
-	// 	var grandTotal = 0;
-	// 	_.each(list, function(value:any, key:any, obj:any) {
-	// 		var total = value.p * value.qty;
-	// 		grandTotal += total;
-	// 	});
-	// 	return grandTotal;
-	// }
-
-
 }
