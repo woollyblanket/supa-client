@@ -1,6 +1,6 @@
 import {Injectable} from 'angular2/core';
 import {FilterCriterion} from './filter-criterion.model';
-import {ProductListItem} from '../list-items/product-list-item.model';
+import {ProductListItem} from './product-list-item.model';
 import * as _ from 'underscore';
 
 @Injectable()

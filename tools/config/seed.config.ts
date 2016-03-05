@@ -75,7 +75,9 @@ export class SeedConfig {
   // Declare local files that needs to be injected
   APP_ASSETS: InjectableDependency[] = [
     { src: `${this.ASSETS_SRC}/main.css`, inject: true },
-    { src: 'bootstrap/dist/css/bootstrap.min.css', inject: true }
+    { src: 'bootstrap/dist/css/bootstrap.min.css', inject: true },
+    { src: 'node_modules/ng2-material/dist/ng2-material.css', inject: true },
+    { src: 'node_modules/ng2-material/dist/font.css', inject: true }
   ];
 
 

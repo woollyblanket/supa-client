@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core';
 
 @Injectable()
-export class ShoppingListItem {
+export class ShoppingListItemComponent {
 	name: string;
 
 	constructor(name) {

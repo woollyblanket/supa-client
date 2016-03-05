@@ -2,6 +2,11 @@ import {Injectable} from 'angular2/core';
 import {Http} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import * as _ from 'underscore'; 
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromArray';
 
 @Injectable()
 export class ResultsService {

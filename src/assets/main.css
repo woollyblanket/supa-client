@@ -6,10 +6,10 @@ html, body, div {
 }
 
 /* Box-sizing border-box */
-* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+/** { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }*/
 
 /* Set up a default font and some padding to provide breathing room */
-body {
+/*body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -57,3 +57,4 @@ button {
 button:hover {
   background-color: #28739E;
 }
+*/

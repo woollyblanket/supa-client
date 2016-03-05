@@ -1,5 +1,5 @@
 import {Injectable} from 'angular2/core';
-import {ProductListItem} from '../list-items/product-list-item.model';
+import {ProductListItem} from './product-list-item.model';
 
 @Injectable()
 export class FilterCriterion {

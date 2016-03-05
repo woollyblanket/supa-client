@@ -1,5 +1,5 @@
 import * as _ from 'underscore';
-import {ProductListItem} from '../list-items/product-list-item.model';
+import {ProductListItem} from './product-list-item.model';
 import {Injectable} from 'angular2/core';
 
 @Injectable()

@@ -3,7 +3,7 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
 	selector: 'sort-product-list',
-	templateUrl: './components/results/lists/sort-product-list.component.html',
+	templateUrl: './results/components/sort-lists/sort-product-list.component.html',
 	directives: [DROPDOWN_DIRECTIVES]
 })
 export class SortProductListComponent {

@@ -1,6 +1,6 @@
 import {Component} from 'angular2/core';
-import {ShoppingListItem} from './shoppinglistitem.ts';
-import {ResultsService} from '../shared/services/results';
+import {ShoppingListItemComponent} from './shoppinglistitem.component.ts';
+import {ResultsService} from '../../shared/services/results.service';
 import {Observable} from 'rxjs/Observable';
 import {Control, FORM_DIRECTIVES} from 'angular2/common';
 import {Router, RouteParams} from 'angular2/router';
@@ -8,15 +8,15 @@ import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
 
 @Component({
   selector: 'home',
-  templateUrl: './components/home/home.html',
-  styleUrls: ['./components/home/home.css'],
+  templateUrl: './home/components/home.component.html',
+  styleUrls: ['./home/components/home.component.css'],
   providers: [ResultsService],
   directives: [DROPDOWN_DIRECTIVES, FORM_DIRECTIVES]
 })
 
 export class HomeComponent {
-	itemList: Array<ShoppingListItem>;
-	aShoppingListItem: ShoppingListItem;
+	itemList: Array<ShoppingListItemComponent>;
+	aShoppingListItem: ShoppingListItemComponent;
 
 	listItem: string = '';
 
@@ -64,7 +64,7 @@ export class HomeComponent {
 		this.listItem = '';
 	}
 
-	removeShoppingListItem(item: ShoppingListItem) {
+	removeShoppingListItem(item: ShoppingListItemComponent) {
 		let index = this.itemList.indexOf(item);
 		this.itemList.splice(index, 1);
 	}

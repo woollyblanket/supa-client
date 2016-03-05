@@ -1,9 +1,9 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
-import {ProductListItem} from '../list-items/product-list-item.model';
+import {ProductListItem} from '../../models/product-list-item.model';
 
 @Component({
 	selector: 'results-list-item',
-	templateUrl: './components/results/list-items/results-list-item.component.html'
+	templateUrl: './results/components/list-items/results-list-item.component.html'
 })
 export class ResultListItemComponent {
 	@Input() item: ProductListItem;

@@ -3,24 +3,24 @@ import {Component} from 'angular2/core';
 import {RouteParams, Router} from 'angular2/router';
 
 // Providers
-import {ResultsService} from '../shared/services/results';
-import {FilterCriterion} from './filters/filter-criterion.model';
-import {FilterCriteria} from './filters/filter-criteria.model';
-import {ProductList} from './lists/product-list.model';
+import {ResultsService} from '../../shared/services/results.service';
+import {FilterCriterion} from '../models/filter-criterion.model';
+import {FilterCriteria} from '../models/filter-criteria.model';
+import {ProductList} from '../models/product-list.model';
 
 // Directives
 import {ResultListItemComponent} from './list-items/results-list-item.component';
 import {ShoppingListItemComponent} from './list-items/shopping-list-item.component';
 import {ProductListPropertyFilterComponent} from './filters/product-list-property-filter.component';
-import {SortProductListComponent} from './lists/sort-product-list.component';
+import {SortProductListComponent} from './sort-lists/sort-product-list.component';
 
 // Pagination
 import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
  
 @Component({
 	pipes: [PaginatePipe],
-	templateUrl: './components/results/results.component.html',
-	styleUrls: ['./components/results/results.component.css'],
+	templateUrl: './results/components/results.component.html',
+	styleUrls: ['./results/components/results.component.css'],
 	providers: [
 		ResultsService,
 		PaginationService,
