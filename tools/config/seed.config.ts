@@ -61,7 +61,8 @@ export class SeedConfig {
     { src: 'rxjs/bundles/Rx.js', inject: 'libs' },
     { src: 'angular2/bundles/angular2.js', inject: 'libs' },
     { src: 'angular2/bundles/router.js', inject: 'libs' },
-    { src: 'angular2/bundles/http.js', inject: 'libs' }
+    { src: 'angular2/bundles/http.js', inject: 'libs' },
+    { src: 'ng2-bootstrap/bundles/ng2-bootstrap.min.js', inject: 'libs' }
   ]);
 
   PROD_NPM_DEPENDENCIES: InjectableDependency[] = normalizeDependencies([
@@ -69,15 +70,16 @@ export class SeedConfig {
     { src: 'reflect-metadata/Reflect.js', inject: 'shims' },
     { src: 'es6-shim/es6-shim.min.js', inject: 'shims' },
     { src: 'systemjs/dist/system.js', inject: 'shims' },
-    { src: 'angular2/bundles/angular2-polyfills.min.js', inject: 'libs' }
+    { src: 'angular2/bundles/angular2-polyfills.min.js', inject: 'libs' },
+    { src: 'ng2-bootstrap/bundles/ng2-bootstrap.min.js', inject: 'libs' }
   ]);
 
   // Declare local files that needs to be injected
   APP_ASSETS: InjectableDependency[] = [
     { src: `${this.ASSETS_SRC}/main.css`, inject: true },
-    { src: 'bootstrap/dist/css/bootstrap.min.css', inject: true },
     { src: 'node_modules/ng2-material/dist/ng2-material.css', inject: true },
-    { src: 'node_modules/ng2-material/dist/font.css', inject: true }
+    { src: 'node_modules/ng2-material/dist/font.css', inject: true },
+    { src: 'node_modules/bootstrap/dist/css/bootstrap.min.css', inject: true }
   ];
 
 

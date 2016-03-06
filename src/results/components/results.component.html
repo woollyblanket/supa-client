@@ -1,3 +1,24 @@
+<md-content class="md-padding" layout="row">
+	<div flex="100" layout="column">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Search Results</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+				<md-list>
+					<md-list-item *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}">
+						<results-list-item [item]="result" (add)="addToShoppingList($event)"></results-list-item>
+						<md-divider></md-divider>
+					</md-list-item>
+				</md-list>
+		    </md-card-content>
+		</md-card>
+	</div>
+</md-content>
+
+
 <h1>Results</h1>
 <p>Search Terms: {{getSearchTerms()}}</p>
 <pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>

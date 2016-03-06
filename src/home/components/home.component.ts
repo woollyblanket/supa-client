@@ -5,13 +5,14 @@ import {Observable} from 'rxjs/Observable';
 import {Control, FORM_DIRECTIVES} from 'angular2/common';
 import {Router, RouteParams} from 'angular2/router';
 import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap/ng2-bootstrap';
+import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 @Component({
   selector: 'home',
   templateUrl: './home/components/home.component.html',
   styleUrls: ['./home/components/home.component.css'],
   providers: [ResultsService],
-  directives: [DROPDOWN_DIRECTIVES, FORM_DIRECTIVES]
+  directives: [DROPDOWN_DIRECTIVES, FORM_DIRECTIVES, MATERIAL_DIRECTIVES]
 })
 
 export class HomeComponent {

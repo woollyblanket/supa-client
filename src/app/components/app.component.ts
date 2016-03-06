@@ -5,15 +5,13 @@ import {ToolbarComponent} from './toolbar.component';
 import {HomeComponent} from '../../home/components/home.component';
 import {AboutComponent} from '../../about/components/about.component';
 import {ResultsComponent} from '../../results/components/results.component';
-import {MATERIAL_DIRECTIVES, MATERIAL_PROVIDERS} from 'ng2-material/all';
 
 @Component({
   	selector: 'sd-app',
   	moduleId: module.id,
   	templateUrl: './app.component.html',
   	encapsulation: ViewEncapsulation.None,
-	directives: [ROUTER_DIRECTIVES, MATERIAL_DIRECTIVES, NavbarComponent, ToolbarComponent],
-	providers: [MATERIAL_PROVIDERS]
+	directives: [ROUTER_DIRECTIVES, NavbarComponent, ToolbarComponent]
 })
 @RouteConfig([
 	{ path: '/',      name: 'Home',  component: HomeComponent  },

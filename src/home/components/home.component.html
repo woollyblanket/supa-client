@@ -1,13 +1,10 @@
-<h1>Shopping List</h1>
-<!-- {{itemList|json}} -->
-<button (click)="onSearch(itemList)">Search</button>
 
-<div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
+<!-- old bootstrap way -->
+<!-- <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
 	{{item.name}}
 	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
-</div>
-<hr>
-<form>
+</div> -->
+<!-- <form>
 <div class="btn-group" dropdown [isOpen]="listItem.length > 0" keyboardNav="true">
 	<input #input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()"/>
 	<button (click)="addShoppingListItem(listItem);input.focus()">Add Item</button>
@@ -17,6 +14,38 @@
       	</li>
     </ul>
 </div> 
-</form>
+</form> -->
 
-<button md-button md-no-ink class="md-primary">Primary (md-noink)</button>
+<md-content class="md-padding" layout="row" layout-wrap layout-align="center start">
+	<div flex="100" layout="column">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Shopping List</span>
+					<span class="md-subhead">Search for the items you want to buy</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+		        <div layout-gt-xs="row">
+		        	<div *ngFor="#item of itemList">
+		        		{{item.name}}
+		        		<button md-button class="md-icon-button md-mini md-accent" aria-label="Clear"
+		        			(click)="removeShoppingListItem(item)">
+		        	      	<i md-icon>clear</i>
+		        	    </button>
+		        	</div>
+		        </div>
+		        <div layout-gt-xs="row">
+		        	<md-input-container class="md-block" flex-gt-xs>
+		        		<label>Search Term</label>
+		        		<input #input md-input [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()">
+		        	</md-input-container>
+		        	<button md-button md-no-ink class="md-primary" (click)="addShoppingListItem(listItem);input.focus()">
+		        		Add Item
+		        	</button>
+		        	<button md-button md-no-ink class="md-primary" (click)="onSearch(itemList)">Search</button>
+		        </div>
+		    </md-card-content>
+		</md-card>
+	</div>
+</md-content>
