@@ -13,10 +13,11 @@ import {ResultListItemComponent} from './list-items/results-list-item.component'
 import {ShoppingListItemComponent} from './list-items/shopping-list-item.component';
 import {ProductListPropertyFilterComponent} from './filters/product-list-property-filter.component';
 import {SortProductListComponent} from './sort-lists/sort-product-list.component';
-import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
+import {PaginateTemplateComponent} from './sort-lists/paginate-template.component';
+import {MATERIAL_DIRECTIVES, SidenavService} from 'ng2-material/all';
 
 // Pagination
-import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
+import {PaginatePipe, PaginationControlsCmp, PaginationService } from 'ng2-pagination/index';
  
 @Component({
 	pipes: [PaginatePipe],
@@ -25,16 +26,18 @@ import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagin
 	providers: [
 		ResultsService,
 		PaginationService,
+		SidenavService,
 		ProductList,
 		FilterCriterion,
 		FilterCriteria],
 	directives: [
 		ResultListItemComponent,
 		ShoppingListItemComponent,
+		PaginateTemplateComponent,
 		ProductListPropertyFilterComponent,
 		SortProductListComponent,
 		MATERIAL_DIRECTIVES,
-		PAGINATION_DIRECTIVES]
+		PaginationControlsCmp]
 })
 
 export class ResultsComponent {
@@ -45,12 +48,14 @@ export class ResultsComponent {
 	filterCriteriaCollection: Dictionary<FilterCriteria> = {};
 
 	resultsPerPage: number = 10;
+	itemsPerPage: number = 10;
 
 	nameFilter: string;
 
 	constructor(private rs: ResultsService,
 				private r: Router,
-				private rp: RouteParams) {
+				private rp: RouteParams,
+				public sidenav: SidenavService) {
 
 		let searchTerms = this.rp.get('searchTerms');
 
@@ -120,6 +125,13 @@ export class ResultsComponent {
 
 	getSearchTerms(): string {
 		return this.rp.get('searchTerms');
+	}
+
+	openSideNav(name: string): void {
+		this.sidenav.show(name);
+	}
+	closeSideNav(name: string): void {
+		this.sidenav.hide(name);
 	}
 
 	// addAllStoresToFilter() {

@@ -3,13 +3,18 @@
 		<md-card>
 			<md-card-title>
 				<md-card-title-text>
-					<span class="md-headline">Search Results</span>
+					<span class="md-headline">
+						<button md-fab class="md-mini" (click)="openSideNav('results')">
+						    <i md-icon>filter_list</i>
+						</button>
+						Search Results ({{filteredResultsList?.count() || 0}})
+					</span>
 				</md-card-title-text>
 			</md-card-title>
 			<md-card-content>
-				<div layout="row">
-					<div flex="50" layout="column" class="md-margin">
-						<label>Items per page</label>
+				<div layout="row" layout-align="space-between center" class="md-margin">
+					<div flex="15">
+						<p>Items per page:</p>
 						<select class="form-control" [(ngModel)]="resultsPerPage">
 							<option value="10">10</option>
 							<option value="25">25</option>
@@ -19,42 +24,19 @@
 							<option value="{{filteredResultsList?.count()}}">Show all</option>
 						</select>
 					</div>
-					<div flex="50" layout="column" class="md-margin">
-						<md-input-container class="md-block" flex-gt-xs>
-							<label>Text Filter</label>
-							<input md-input [ngModel]="nameFilter" (ngModelChange)="nameFilterChange($event)">
-						</md-input-container>
+					<div flex="30">
+						<pagination-controls #pc id="results"(pageChange)="currentPage = $event">
+							<paginate-template [pc]="pc"></paginate-template>
+						</pagination-controls>
 					</div>
-				</div>
-
-				<div layout="row">
-					<product-list-property-filter 
-						[criterion]="criterion" 
-						(clicked)="filterResults()" 
-						*ngFor="#criterion of filterCriteriaCollection.store?.items">
-					</product-list-property-filter>
-					<product-list-property-filter 
-						[criterion]="criterion" 
-						(clicked)="filterResults()" 
-						*ngFor="#criterion of filterCriteriaCollection.query?.items">
-					</product-list-property-filter>
-				</div>
-
-				<div layout="row">
-					<div flex="50" layout="column" class="md-margin">
-						<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
-					</div>
-					<div flex="50" layout="column" class="md-margin">
-						<sort-product-list 
-							(sort)="sortListBy($event, filteredResultsList)">
+					<div flex="10">
+						<sort-product-list (sort)="sortListBy($event, filteredResultsList)">
 						</sort-product-list>
 					</div>
 				</div>
-
 				<md-divider></md-divider>
-
 				<md-list>
-					<md-list-item *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}">
+					<md-list-item *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: currentPage}">
 						<md-divider></md-divider>
 						<results-list-item 
 							flex="100" 
@@ -64,6 +46,9 @@
 						</results-list-item>
 					</md-list-item>
 				</md-list>
+				<pagination-controls #pc id="results" (pageChange)="currentPage = $event">
+					<paginate-template [pc]="pc"></paginate-template>
+				</pagination-controls>
 		    </md-card-content>
 		</md-card>
 	</div>
@@ -71,10 +56,19 @@
 		<md-card>
 			<md-card-title>
 				<md-card-title-text>
-					<span class="md-headline">ShoppingList</span>
+					<span class="md-headline">
+						Shopping List ({{shoppingList?.count() || 0}})
+					</span>
 				</md-card-title-text>
 			</md-card-title>
 			<md-card-content>
+				<div layout="row" layout-align="space-between center" class="md-margin">
+					<div flex="15" flex-offset="85">
+						<sort-product-list (sort)="sortListBy($event, shoppingList)">
+						</sort-product-list>
+					</div>
+				</div>
+				<md-divider></md-divider>
 				<md-list>
 					<md-list-item *ngFor="#item of shoppingList?.items">
 						<shopping-list-item 
@@ -90,3 +84,31 @@
 		</md-card>
 	</div>
 </md-content>
+
+<md-sidenav-container layout="row" flex>
+    <md-sidenav name="results" align="left" layout="column">
+      	<md-toolbar class="md-theme-indigo">
+        	<h1 class="md-toolbar-tools">Results Filter</h1>
+      	</md-toolbar>
+      	<md-content layout-padding>
+      		<p>Current Item Count: {{filteredResultsList?.count() || 0}}</p>
+			<md-input-container class="md-block" flex-gt-xs>
+				<label>Text Filter</label>
+				<input md-input [ngModel]="nameFilter" (ngModelChange)="nameFilterChange($event)">
+			</md-input-container>
+			<product-list-property-filter 
+				[criterion]="criterion" 
+				(clicked)="filterResults()" 
+				*ngFor="#criterion of filterCriteriaCollection.store?.items">
+			</product-list-property-filter>
+			<br>
+			<product-list-property-filter 
+				[criterion]="criterion" 
+				(clicked)="filterResults()" 
+				*ngFor="#criterion of filterCriteriaCollection.query?.items">
+			</product-list-property-filter>
+			<br>
+	        <button md-raised-button (click)="closeSideNav('results')">Done</button>
+      	</md-content>
+    </md-sidenav>
+</md-sidenav-container>

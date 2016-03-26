@@ -1,28 +1,10 @@
-
-<!-- old bootstrap way -->
-<!-- <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
-	{{item.name}}
-	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
-</div> -->
-<!-- <form>
-<div class="btn-group" dropdown [isOpen]="listItem.length > 0" keyboardNav="true">
-	<input #input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()"/>
-	<button (click)="addShoppingListItem(listItem);input.focus()">Add Item</button>
-    <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
-      	<li role="menuitem" *ngFor="#item of items | async">
-      		<a (click)="addShoppingListItem(item);input.focus()" class="dropdown-item" href="#">{{item}}</a>
-      	</li>
-    </ul>
-</div> 
-</form> -->
-
 <md-content class="md-padding" layout="row">
 	<div flex="100" layout="column">
 		<md-card>
 			<md-card-title>
 				<md-card-title-text>
 					<span class="md-headline">Shopping List</span>
-					<span class="md-subhead">Search for the items you want to buy</span>
+					<span class="md-subhead">Search for the items you want to buy and add them to the shopping list</span>
 				</md-card-title-text>
 			</md-card-title>
 			<md-card-content>
@@ -39,7 +21,7 @@
 			        </div>
 
 			        <div flex="30" layout-margin layout-wrap>
-			        	<span class="md-subhead">Search Terms</span>
+			        	<span class="md-subhead">Shopping List</span>
 
 			        	<div *ngFor="#item of itemList" >
 			        		{{item.name}}

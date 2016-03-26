@@ -1,0 +1,18 @@
+<div class="custom-pagination">
+<div class="pagination-previous" [class.disabled]="pc.isFirstPage()">
+    <a *ngIf="!pc.isFirstPage()" (click)="pc.previous()"> < </a>
+</div>
+
+<div *ngFor="#page of pc.pages" [class.current]="pc.getCurrent() === page.value">
+    <a (click)="pc.setCurrent(page.value)" *ngIf="pc.getCurrent() !== page.value">
+        <span>{{ page.label }}</span>
+    </a>
+    <div *ngIf="pc.getCurrent() === page.value">
+        <span>{{ page.label }}</span>
+    </div>
+</div>
+
+<div class="pagination-next" [class.disabled]="pc.isLastPage()" *ngIf="pc.directionLinks">
+    <a *ngIf="!pc.isLastPage()" (click)="pc.next()"> > </a>
+</div>
+</div>
