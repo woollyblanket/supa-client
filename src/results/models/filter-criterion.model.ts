@@ -20,23 +20,27 @@ export class FilterCriterion {
 		this._active = true;
 	} 
 
-	get operator() {
+	get operator(): string {
 		return this._operator;
 	}
 
-	get property() {
+	get property(): string {
 		return this._property;
 	}
 
-	get value() {
+	get value(): string {
 		return this._value;
 	}
 
-	get active() {
+	set value(aString: string) {
+		this._value = aString;
+	}
+
+	get active(): boolean {
 		return this._active;
 	}
 
-	set active(aBool) {
+	set active(aBool: boolean) {
 		this._active = aBool;
 	}
 
@@ -45,6 +49,8 @@ export class FilterCriterion {
 		if(!this._active) {
 			return false;
 		}
+
+		var searchRegEx = new RegExp(this._value, 'i');
 
 		switch (this._operator) { 
 			case '===':
@@ -58,15 +64,9 @@ export class FilterCriterion {
 				}
 				break;
 			case 'contains':
-				if (item[this._property].indexOf(this._value) !== -1) {
-					return true;
-				}
-				break;
+				return searchRegEx.test(item[this._property]);
 			case '!contain':
-				if (item[this._property].indexOf(this._value) === -1) {
-					return true;
-				}
-				break;
+				return !searchRegEx.test(item[this._property]);
 			default:
 				return false;
 		}
