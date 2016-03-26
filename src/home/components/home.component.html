@@ -1,0 +1,56 @@
+
+<!-- old bootstrap way -->
+<!-- <div class="label label-primary shoppingListItem" *ngFor="#item of itemList">
+	{{item.name}}
+	<span class="glyphicon glyphicon-remove closeBtn" (click)="removeShoppingListItem(item)"></span>
+</div> -->
+<!-- <form>
+<div class="btn-group" dropdown [isOpen]="listItem.length > 0" keyboardNav="true">
+	<input #input type="text" [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()"/>
+	<button (click)="addShoppingListItem(listItem);input.focus()">Add Item</button>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="single-button">
+      	<li role="menuitem" *ngFor="#item of items | async">
+      		<a (click)="addShoppingListItem(item);input.focus()" class="dropdown-item" href="#">{{item}}</a>
+      	</li>
+    </ul>
+</div> 
+</form> -->
+
+<md-content class="md-padding" layout="row">
+	<div flex="100" layout="column">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Shopping List</span>
+					<span class="md-subhead">Search for the items you want to buy</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+		        <div layout-gt-xs="row">
+			        <div flex="70">
+			        	<md-input-container class="md-block" flex-gt-xs>
+			        		<label>Search Term</label>
+			        		<input #input md-input [ngFormControl]="term" [(ngModel)]="listItem" (keyup.enter)="addShoppingListItem(listItem);input.focus()">
+			        	</md-input-container>
+			        	<button md-button md-no-ink class="md-primary" (click)="addShoppingListItem(listItem);input.focus()">
+			        		Add Item
+			        	</button>
+			        	<button md-raised-button class="md-primary md-raised" (click)="onSearch(itemList)">Search</button>
+			        </div>
+
+			        <div flex="30" layout-margin layout-wrap>
+			        	<span class="md-subhead">Search Terms</span>
+
+			        	<div *ngFor="#item of itemList" >
+			        		{{item.name}}
+			        		<button md-button class="md-icon-button md-mini md-accent" aria-label="Clear"
+			        			(click)="removeShoppingListItem(item)">
+			        	      	<i md-icon>clear</i>
+			        	    </button>
+			        	</div>
+			        </div>
+		        </div>
+		    </md-card-content>
+		</md-card>
+	</div>
+</md-content>

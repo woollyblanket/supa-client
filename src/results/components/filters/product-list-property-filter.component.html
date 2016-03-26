@@ -1,0 +1,8 @@
+<button 
+	md-raised-button
+	[class.md-primary]="criterion.active"
+	[class.md-warn]="!criterion.active"
+	class="md-raised small-button" 
+	(click)="filter()">
+		{{criterion.value}}
+</button>
