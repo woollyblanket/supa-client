@@ -1,0 +1,168 @@
+<md-content layout="row">
+	<div flex="66" layout="column">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">Search Results</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+				<div layout="row">
+					<div flex="50" layout="column" class="md-margin">
+						<label>Items per page</label>
+						<select class="form-control" [(ngModel)]="resultsPerPage">
+							<option value="10">10</option>
+							<option value="25">25</option>
+							<option value="50">50</option>
+							<option value="75">75</option>
+							<option value="100">100</option>
+							<option value="{{filteredResultsList?.count()}}">Show all</option>
+						</select>
+					</div>
+					<div flex="50" layout="column" class="md-margin">
+						<md-input-container class="md-block" flex-gt-xs>
+							<label>Text Filter</label>
+							<input md-input [(ngModel)]="textFilter">
+						</md-input-container>
+					</div>
+				</div>
+
+				<div layout="row">
+					<div flex="50" *ngFor="#criteria of filterCriteriaCollection">
+						<product-list-property-filter 
+							[criterion]="criterion" 
+							(clicked)="filterResults()" 
+							*ngFor="#criterion of criteria.items">
+						</product-list-property-filter>
+					</div>
+				</div>
+
+				<div layout="row">
+					<div flex="50" layout="column" class="md-margin">
+						<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
+					</div>
+					<div flex="50" layout="column" class="md-margin">
+						<sort-product-list 
+							(sort)="sortListBy($event, filteredResultsList)">
+						</sort-product-list>
+					</div>
+				</div>
+
+				<md-divider></md-divider>
+
+				<md-list>
+					<md-list-item *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}">
+						<md-divider></md-divider>
+						<results-list-item 
+							flex="100" 
+							[item]="result" 
+							layout-margin
+							(add)="addToShoppingList($event)">
+						</results-list-item>
+					</md-list-item>
+				</md-list>
+		    </md-card-content>
+		</md-card>
+	</div>
+	<div flex="33" layout="column">
+		<md-card>
+			<md-card-title>
+				<md-card-title-text>
+					<span class="md-headline">ShoppingList</span>
+				</md-card-title-text>
+			</md-card-title>
+			<md-card-content>
+				<md-list>
+					<md-list-item *ngFor="#item of shoppingList?.items">
+						<shopping-list-item 
+							flex="100" 
+							[item]="item" 
+							layout-margin
+							(remove)="removeFromShoppingList($event)">
+						</shopping-list-item>
+						<md-divider></md-divider>
+					</md-list-item>
+				</md-list>
+		    </md-card-content>
+		</md-card>
+	</div>
+</md-content>
+
+
+<h1>Results</h1>
+<p>Search Terms: {{getSearchTerms()}}</p>
+<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
+<div class="row">
+	<div class="col-md-8">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+			<div class="row">
+				<div class="col-md-6">
+					<h3 class="panel-title">
+						Search Results
+					</h3>
+					<!-- <p>{{filteredResultsList?.count()}} items</p> -->
+					
+					<select class="form-control" [(ngModel)]="resultsPerPage">
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="75">75</option>
+						<option value="100">100</option>
+						<option value="{{filteredResultsList?.count()}}">Show all</option>
+					</select>
+					<input [(ngModel)]="textFilter"/>
+				</div>
+				<div class="col-md-6">
+					<sort-product-list 
+						(sort)="sortListBy($event, filteredResultsList)">
+					</sort-product-list>
+				</div>
+			</div>
+			</div>
+			<div class="panel-body">
+			    <div class="row">
+			    	<div class="col-md-6" *ngFor="#criteria of filterCriteriaCollection">
+			    		<product-list-property-filter 
+			    			[criterion]="criterion" 
+			    			(clicked)="filterResults()" 
+			    			*ngFor="#criterion of criteria.items">
+			    		</product-list-property-filter>
+			    	</div>
+			    </div>
+			</div>
+			<ul class="list-group" >
+			    <li class="list-group-item" *ngFor="#result of filteredResultsList?.items | paginate: { id: 'results', itemsPerPage: resultsPerPage, currentPage: p}" >
+			    	<results-list-item [item]="result" (add)="addToShoppingList($event)"></results-list-item>
+			    </li>
+			</ul>
+		</div>
+		<pagination-controls id="results"(pageChange)="p = $event"></pagination-controls>
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-8">
+						<h3 class="panel-title">
+							Shopping List
+						</h3>
+						<p>Total: {{shoppinglistTotal | currency: "EUR":true:"1.2-2"}}</p>
+						<p>{{shoppingList?.count()}} items</p>
+					</div>
+					<div class="col-md-4">
+						<sort-product-list 
+							(sort)="sortListBy($event, shoppingList)">
+						</sort-product-list>
+					</div>
+				</div>
+			</div>
+		
+			<ul class="list-group" > 
+			    <li class="list-group-item" *ngFor="#item of shoppingList?.items" >
+			    	<shopping-list-item [item]="item" (remove)="removeFromShoppingList($event)"></shopping-list-item>
+			    </li>
+			</ul>
+		</div>
+	</div>
+</div>
