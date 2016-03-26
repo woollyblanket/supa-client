@@ -3,7 +3,8 @@ import {FilterCriterion} from '../../models/filter-criterion.model';
 
 @Component({
 	selector: 'product-list-property-filter',
-	templateUrl: './results/components/filters/product-list-property-filter.component.html'
+	templateUrl: './results/components/filters/product-list-property-filter.component.html',
+	styleUrls: ['./results/components/results.component.css']
 })
 export class ProductListPropertyFilterComponent {
 	@Input() criterion: FilterCriterion;

@@ -1,7 +1,8 @@
 <button 
-	[class.btn-success]="criterion.active"
-	[class.btn-danger]="!criterion.active"
-	class="btn btn-default btn-sm" 
+	md-raised-button
+	[class.md-primary]="criterion.active"
+	[class.md-warn]="!criterion.active"
+	class="md-raised small-button" 
 	(click)="filter()">
 		{{criterion.value}}
 </button>

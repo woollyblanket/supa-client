@@ -1,7 +1,88 @@
-<!-- <img [src]="item.image" width=128 height=128 alt="{{item.name}}" onerror="this.onerror=null;this.src='./assets/img/image.png';"/>
-<h3>{{item.store}}</h3>
-<h4>{{item.name}}</h4>
- -->
+<div layout="row">
+	<div flex="20">
+		<img [src]="item.image" width=128 height=128 alt="{{item.name}}" onerror="this.onerror=null;this.src='./assets/img/image.png';"/>
+	</div>
+	<div flex="80">
+		<div layout="row">
+			<div flex="80" class="md-subhead">
+				<span class="label label-info">{{item.store}}</span> {{item.name}} 
+				<small class="md-caption" *ngIf="item.measure">({{item.measure}})</small>
+			</div>
+
+			<div flex="20">
+				<p class="md-subhead pull-right">{{item.price * item.qty | currency: "EUR":true:"1.2-2"}}</p>
+			</div>
+		</div>
+		<div layout="row">
+			<div flex="60">
+				<div *ngFor="#category of item.categories; #i=index">
+					<small class="md-caption display-block" [ngStyle]="{'margin-left': i * 5 + 'px'}">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> {{category}}
+					</small>
+				</div>
+				<div class="label label-danger" *ngIf="item.promo">
+					<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span> {{item.promo}}
+				</div>
+				<br *ngIf="item.promo">
+				<div class="label label-warning" *ngIf="item.limited">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span> Valid Until: {{item.limited}}
+				</div>
+				<br *ngIf="item.limited">
+				<div class="label label-primary" *ngIf="item.priceDesc">
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> {{item.priceDesc}}
+				</div>
+				<!-- <hr> -->
+				<!-- <div *ngIf="item.promo" class="text-danger">
+					<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+					<small class="md-caption"> {{item.promo}}</small>
+				</div>
+		  		<div *ngIf="item.limited" class="text-danger">
+		  			<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+		  			<small class="md-caption"> Valid Until: {{item.limited}}</small>
+		  		</div>
+		  		<div *ngIf="item.priceDesc" class="text-primary">
+		  			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+		  			<small class="md-caption"> {{item.priceDesc}}</small>
+		  		</div> -->
+			</div>
+			<!-- <div flex="35" layout-align="none" layout="column">
+				<div *ngIf="item.promo" class="text-danger">
+					<span class="glyphicon glyphicon-certificate" aria-hidden="true"></span>
+					<small class="md-caption"> {{item.promo}}</small>
+				</div>
+		  		<div *ngIf="item.limited" class="text-danger">
+		  			<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+		  			<small class="md-caption"> Valid Until: {{item.limited}}</small>
+		  		</div>
+		  		<div *ngIf="item.priceDesc" class="text-primary">
+		  			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+		  			<small class="md-caption"> {{item.priceDesc}}</small>
+		  		</div>
+			</div> -->
+			<div flex="25" layout="column" layout-align="center center">
+				<span class="badge">Quantity: {{item.qty}}</span>
+				<br>
+				<div class="btn-group btn-group-xs center-block" role="group" aria-label="Quantity">
+				  	<button type="button" class="btn btn-info" (click)="item.minusQty()">
+						<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-info" (click)="item.plusQty()">
+				  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				  	</button>
+				</div>
+			</div>
+			<div flex="15" layout-align="start end" layout="column">
+				<!-- <small *ngIf="item.qty > 1"class="md-caption">Unit Price: {{item.price | currency: "EUR":true:"1.2-2"}}</small>
+				<br> -->
+				<button type="button" class="btn btn-success btn-xs" (click)="addToShoppingList()"> 
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+ <!-- 
 
 <p class="lead">
 	<span class="label label-info">{{item.store}}</span> {{item.name}}
@@ -55,4 +136,4 @@
 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add
 		</button>
 	</div>
-</div>
+</div> -->

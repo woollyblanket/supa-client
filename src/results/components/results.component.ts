@@ -13,6 +13,7 @@ import {ResultListItemComponent} from './list-items/results-list-item.component'
 import {ShoppingListItemComponent} from './list-items/shopping-list-item.component';
 import {ProductListPropertyFilterComponent} from './filters/product-list-property-filter.component';
 import {SortProductListComponent} from './sort-lists/sort-product-list.component';
+import {MATERIAL_DIRECTIVES} from 'ng2-material/all';
 
 // Pagination
 import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagination/index';
@@ -32,6 +33,7 @@ import {PaginatePipe, PAGINATION_DIRECTIVES, PaginationService } from 'ng2-pagin
 		ShoppingListItemComponent,
 		ProductListPropertyFilterComponent,
 		SortProductListComponent,
+		MATERIAL_DIRECTIVES,
 		PAGINATION_DIRECTIVES]
 })
 
@@ -90,7 +92,6 @@ export class ResultsComponent {
 	}
 
 	addToShoppingList(item: any): void {
-		console.log(typeof item);
 		this.shoppingList.addItem(item);
 		this.filteredResultsList.removeItem(item);
 	}
@@ -123,42 +124,6 @@ export class ResultsComponent {
 	// 	this.resultsTotal = 0;
 	// }
 
-	// incTotal(item, total) {
-	// 	console.log('incTotal called');
-	// 	total += item.p;
-	// 	return total;
-	// }
-
-	// decTotal(item, total) {
-	// 	console.log('decTotal called');
-	// 	total -= item.p;
-	// 	return total;
-	// }
-
-	// sortBy(list, property: string) {
-	// 	console.log('sortBy called');
-	// 	list = _.sortBy(list, property);
-	// 	return list;
-	// }
-
-	// sortByDec(list, property: string) {
-	// 	console.log('sortByDec called');
-	// 	list = _.sortBy(list, property).reverse();
-	// 	return list;
-	// }
-
-	// addItemToShoppingList(item) {
-	// 	this.filteredResults = _.without(this.filteredResults, item);
-	// 	this.shoppinglist.push(item);
-	// 	this.shoppinglistTotal = this.getTotal(this.shoppinglist);
-	// }
-
-	// removeItemFromShoppingList(item) {
-	// 	this.shoppinglist = _.without(this.shoppinglist, item);
-	// 	this.filteredResults.push(item);
-	// 	this.shoppinglistTotal = this.getTotal(this.shoppinglist);
-	// }
-
 	// getTotal(list) {
 	// 	var grandTotal = 0;
 	// 	_.each(list, function(value:any, key:any, obj:any) {
@@ -167,6 +132,4 @@ export class ResultsComponent {
 	// 	});
 	// 	return grandTotal;
 	// }
-
-
 }
